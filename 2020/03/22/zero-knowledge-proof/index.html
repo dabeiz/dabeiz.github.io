@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="零知识证明（Zero Knowledge Proof，ZKP）是指证明者 P 在不透露任何其他信息的情况下能够向验证者 V 证明某个陈述是真的。也就是说，证明结束时，验证者 V 除了知道这个陈述是真的之外，不知道其他任何信息。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="零知识证明">
+<meta property="og:url" content="http://yoursite.com/2020/03/22/zero-knowledge-proof/index.html">
+<meta property="og:site_name" content="DABEI-Z NOTES">
+<meta property="og:description" content="零知识证明（Zero Knowledge Proof，ZKP）是指证明者 P 在不透露任何其他信息的情况下能够向验证者 V 证明某个陈述是真的。也就是说，证明结束时，验证者 V 除了知道这个陈述是真的之外，不知道其他任何信息。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/22/zero-knowledge-proof/zkp.svg">
+<meta property="og:image" content="http://yoursite.com/2020/03/22/zero-knowledge-proof/gi.svg">
+<meta property="article:published_time" content="2020-03-22T03:46:39.000Z">
+<meta property="article:modified_time" content="2020-03-22T04:48:05.653Z">
+<meta property="article:author" content="dabei-Z">
+<meta property="article:tag" content="interactive proof">
+<meta property="article:tag" content="zero knowledge">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/22/zero-knowledge-proof/zkp.svg">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/22/zero-knowledge-proof/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>零知识证明 | DABEI-Z NOTES</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DABEI-Z NOTES</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/22/zero-knowledge-proof/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="dabei-Z">
+      <meta itemprop="description" content="或许能写下去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DABEI-Z NOTES">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          零知识证明
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-22 11:46:39 / 修改时间：12:48:05" itemprop="dateCreated datePublished" datetime="2020-03-22T11:46:39+08:00">2020-03-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B4%E7%90%86%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">整理笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>零知识证明（Zero Knowledge Proof，ZKP）是指证明者 P 在不透露任何其他信息的情况下能够向验证者 V 证明某个陈述是真的。也就是说，证明结束时，验证者 V 除了知道这个陈述是真的之外，不知道其他<strong>任何</strong>信息。</p>
+<a id="more"></a>
+<p>这听上去很不靠谱啊？如果一个人要向我证明某件事，但他又不愿意告诉我更多关于这件事的信息，我凭什么相信他呢？但 Goldwasser 等人在 [GMR85] 里面告诉我们：没错！这真的可以办到！</p>
+<p>为了让我们对零知识证明有一个直观的感受，可以先来看一个例子。比如 P 要向 V 证明自己有某个保险箱 S 的钥匙，但他不想直接把钥匙给 V，那么他们可以商量出这样一个协议：V 知道保险箱 S 中有某个物品 T，且其他任何地方都没有这个物品，那么 P 如果能将物品 T 拿到 V 面前，V 就可以认为 P 确实有保险箱 S 的钥匙。在这个过程中，P 并没有直接将钥匙交给 V，在协议结束时，V 除了知道“P 有保险箱 S 的钥匙”之外，不知道任何其他的信息。也就是说，P 和 V 商量出来的协议其实是一个零知识证明协议。</p>
+<p>在正式定义零知识证明前，我们需要阐明几个问题，否则零知识证明的数学定义会让我们觉得莫名其妙。</p>
+<h1 id="什么是“知识”？"><a href="#什么是“知识”？" class="headerlink" title="什么是“知识”？"></a>什么是“知识”？</h1><p>知识（Knowledge）这个词放在一个数学名词里显得非常奇怪，至少我是这么认为的。我能接受的一个解释是：这里的知识其实是指<strong>计算角度的知识增益（gain of knowledge）</strong>。</p>
+<p>如果有人告诉我们“1+2=3”，那么很显然我们没有增长任何知识；但是如果有人告诉我们 4999 和 49787是 248885213 的因子，那么很大概率我们是增长了知识的。造成这种差异的原因是，我们可以自己算出前者，但（不借助计算器的情况下短时间内）算不出后者。</p>
+<p>因此在零知识证明中，验证者 V 不知道其他任何信息，是指 V 不能通过和证明者 P 的交互获取 V 本无法通过自身的计算而得到的知识增益。</p>
+<h1 id="从-IP-到-ZKP"><a href="#从-IP-到-ZKP" class="headerlink" title="从 IP 到 ZKP"></a>从 IP 到 ZKP</h1><p>零知识证明中也有证明者 P 和验证者 V，这说明我们可以将它看成是交互证明的特殊形式，也就是在交互证明的基础上加上了“零知识”这个约束。不难发现，这个约束其实是针对证明者 P 的，因为 P 要保证在向 V 证明陈述的同时也不泄露其他任何信息。</p>
+<p>同时注意到，在交互证明的定义中，证明者 P 计算能力是无限制的（computational unbounded），可是这只存在于理论世界里，在现实中并不存在算力无限的机器。因此零知识证明中给出了更加合理的假设，即假设证明者 P 也和验证者 V 一样，是计算能力有限的（computational bounded），更确切地说，他们的计算能力是<strong>多项式（polynomial）</strong>级别的，这在密码学中又经常被称为<strong>“efficient”</strong>。</p>
+<p>然而上面的这个假设产生了一个新的问题：既然现在 P 和 V 的计算能力都一样了，那么不管陈述是什么，P 能计算的，V 同样也能计算，那么在这个假设下证明陈述都是一个问题，更别谈零知识了。因此 P 一定还会有一个额外的输入，并且 V 不知道这个输入。当要证明的陈述为 $x \in L$ 时，这个额外的输入 $\omega$ 就是证明陈述的证据（witness），这种情况下，$x$ 和 $\omega$ 可以看成是满足关于语言 $L$ 的一个二元<strong>关系（relation）</strong>，把这个二元关系抽象成为二元组集合 $R_L$，那么 $x$ 和 $\omega$ 所满足的关系就可以表达成 $(x, \omega) \in R_L$。</p>
+<h1 id="视野和模拟"><a href="#视野和模拟" class="headerlink" title="视野和模拟"></a>视野和模拟</h1><p>在密码学中，<strong>视野（View）</strong>和<strong>模拟（Simulate）</strong>是两个很重要的概念。下面将它们带入到零知识证明的场景中来解释。</p>
+<p><img src="/2020/03/22/zero-knowledge-proof/zkp.svg" alt="zkp"></p>
+<p>如图，证明者 P 和验证者 V 有一个共同的输入（common input）$x$，除此之外，P 本身还有一个秘密的输入 $\omega$，P 试图向 V 证明陈述 $x \in L$ 是真实的并且除此之外不想让 V 知道更多的信息。于是 P 和 V 遵循某个符合这个要求的零知识证明协议开始交互，交互产生的信息称为<strong>记录（Transcript）</strong>。</p>
+<p>在上述场景中，中间的共同输入（PART I）和交互记录（PART II）是公开的，而左侧 P（PART III）与右侧 V（PART IV）进行的本地计算是保密的。因此 P 的视野（view）就是 P 本地进行的计算和所有公开的信息（PART I + II + III），而 V 的视野就是 V 本地进行的计算和所有公开的信息（PART I + II + IV）。</p>
+<p>在零知识证明中的要求中，证明结束时，V 除了知道陈述是真实的之外，不知道其他任何信息。那么要想正式定义零知识证明，就必须要先解决这样一个问题：怎么去用数学语言去描述“不知道其他任何信息”这个条件呢？这不太好回答。</p>
+<p>我们换个思路。考虑到 V 在证明开始时，它的视野只有PART I；到证明结束时，它的视野变成了PART I + II + IV，可是这多出来的 PART II + IV 并没有带给 V 更多的知识，因为零知识证明要求 V “不知道其他任何信息”。也就是说，PART II + IV 对 V 来说没有任何计算上的知识增益，V 甚至可以自己在本地瞎捣鼓出一堆输入输出（假设是PART V）当做 Part II + IV 而没有任何不良影响！也就是视野 PART I + II + IV 和视野 PART I + V 在 验证者 V 看来是差不多的（更严谨一点，这称为<strong>不可区分的 indistinguishable</strong>）。验证者 V 这个在本地瞎捣鼓出类似于与真实的 P 交互的视野的过程就是模拟（simulate）。</p>
+<h1 id="零知识证明的定义"><a href="#零知识证明的定义" class="headerlink" title="零知识证明的定义"></a>零知识证明的定义</h1><p>现在，我们可以正式地定义零知识证明了。</p>
+<hr>
+<p><strong>（定义：零知识证明）</strong> 给定语言（Language）$L$ 以及关系（Relation）$R_L$，若存在多项式时间（Efficient）的算法元组$(P, V)$，满足：</p>
+<ul>
+<li><p>完备性 Completeness：$\forall \ x \in L, \exists \ \omega \in R_L(x)$，​</p>
+<script type="math/tex; mode=display">
+Pr[P(x, \omega) \leftrightarrow V(x) \mbox{ accepts}] = 1</script></li>
+<li><p>可靠性 Soundness: $\forall \ x \notin L, \forall \mbox{ unbounded cheating prover P}$*，</p>
+<script type="math/tex; mode=display">
+Pr[P^*(x, \omega) \leftrightarrow V(x) \mbox{ accepts}] \le 1/2</script></li>
+<li><p>零知识性 Zero-konwlege：$\exists \mbox{ Simulator } S, \forall \mbox{ bounded cheating verifier } V$*，$\forall \ x \in L, \forall \ \omega \in R_L(x)$，</p>
+<script type="math/tex; mode=display">
+\mbox{VIEW}_{V^{*}}(P(x, \omega) \leftrightarrow V^{*}(x)) \simeq S^{V^{*}}(x)</script><p>则称算法元组 $(P, V)$ 为关系 $R_L$ 的零知识证明协议。</p>
+</li>
+</ul>
+<hr>
+<p>定义中，完备性和可靠性与交互证明定义中的类似，而零知识性就是用数学语言将上一节的讨论重新描述了一遍。一个协议须要同时满足定义中的三个条件，才能称之为零知识证明协议。</p>
+<h1 id="图同构的零知识证明"><a href="#图同构的零知识证明" class="headerlink" title="图同构的零知识证明"></a>图同构的零知识证明</h1><p>如图为构造出的图同构（Graph Isomorphism，GI）的零知识证明协议。</p>
+<p><img src="/2020/03/22/zero-knowledge-proof/gi.svg" alt="gi"></p>
+<p>对照着零知识证明的定义，我们可以有如下分析。</p>
+<ul>
+<li><p>完备性 Completeness：</p>
+<p>如果 $b=0$，那么 $H=\phi(G_b)=\pi(G_0)$，验证通过；</p>
+<p>如果 $b=1$，那么 $H=\phi(G_b)=\pi \circ \omega (G_1) = \pi(G_0)$，验证通过。</p>
+</li>
+<li><p>可靠性 Soundness：</p>
+<p>如果  $x \notin L$，即 $G_0$ 和 $G_1$ 不同构，那么就不存在同构关系 $\omega$，于是 P 就只能欺骗 V。主要到 P 发送的 $H$ 最多只能满足 $b=0$ 或者 $b=1$ 其中一个的验证，由于V 关于 b 的选择是随机的，于是 P 得逞的概率为 $\frac{1}{2}$ 。同样的，这个概率可以通过不断重复图中的证明协议而增强到 $(\frac{1}{2})^n$ 。</p>
+</li>
+<li><p>零知识性 Zero-knowledge：</p>
+<p>在图中的证明协议中，一个被验证者 V 接受的交互记录（即 V 的视野）为一个三元组 $(H, b, \phi)$。其中 $b$ 是随机选取的，而 $H = \pi(G_0)$，考虑到 $\pi$ 也是随机选取的同构映射，那么在不知道 $\pi$ 的情况下，$H$ 也是随机的。同样地，可以证明在不知道 $\pi$ 的情况下，$\phi$ 也是随机的。同时，这个三元组满足关系 $H = \phi (G_b)$。要想要模拟这个视野，模拟器 S 只需要</p>
+<ol>
+<li>$b’ \gets \{0, 1\}$ ；</li>
+<li>$\phi’ \gets \{ \mbox{All permutations between } G_0 \mbox{ and } G_1 \}$ ；</li>
+<li>$H’ := \phi’ (G_{b’})$ ；</li>
+<li>将 $H’$ 发送给 $V$*，如果 $V$* 返回的 $b$ 恰好等于 $b’$，那么 S 就输出 $(H’, b’, \phi’)$，否则回到步骤1。</li>
+</ol>
+<p>注意到 $V$* 对 $b$ 的选择只能是随机的，因此模拟器 S 执行一轮上述步骤的就能输出三元组的概率为 $\frac{1}{2}$，而每轮的结果是相互独立的，于是模拟器 S 能输出三元组的期望值（except）为执行两轮上述操作。这样的情况我们说，模拟器 S 可以在<strong>期望意义下的多项式时间（expected polynomial time）</strong>内终止。</p>
+</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[GMR85]: Shafi Goldwasser, Silvio Micali, and Charles Rackoff. “The knowledge complexity of interactive proof-systems.” <em>symposium on the theory of computing</em> (1985): 291-304. pdf: <a href="http://groups.csail.mit.edu/cis/crypto/classes/6.876/papers/gmr-ZK.pdf" target="_blank" rel="noopener">http://groups.csail.mit.edu/cis/crypto/classes/6.876/papers/gmr-ZK.pdf</a> </p>
+<p>Scribes of Berkeley CS 276: Cryptography (Fall 2014). website: <a href="https://people.eecs.berkeley.edu/~sanjamg/classes/cs276-fall14/" target="_blank" rel="noopener">https://people.eecs.berkeley.edu/~sanjamg/classes/cs276-fall14/</a></p>
+<p>Slides on Zero knowledge and some applications by Helger Lipmaa. pdf: <a href="http://kodu.ut.ee/~lipmaa/teaching/Bergen2004.pdf" target="_blank" rel="noopener">http://kodu.ut.ee/~lipmaa/teaching/Bergen2004.pdf</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/interactive-proof/" rel="tag"># interactive proof</a>
+              <a href="/tags/zero-knowledge/" rel="tag"># zero knowledge</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/15/interactive-proof/" rel="prev" title="交互式证明">
+      <i class="fa fa-chevron-left"></i> 交互式证明
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是“知识”？"><span class="nav-number">1.</span> <span class="nav-text">什么是“知识”？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#从-IP-到-ZKP"><span class="nav-number">2.</span> <span class="nav-text">从 IP 到 ZKP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#视野和模拟"><span class="nav-number">3.</span> <span class="nav-text">视野和模拟</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#零知识证明的定义"><span class="nav-number">4.</span> <span class="nav-text">零知识证明的定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图同构的零知识证明"><span class="nav-number">5.</span> <span class="nav-text">图同构的零知识证明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dabei-Z"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">dabei-Z</p>
+  <div class="site-description" itemprop="description">或许能写下去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dabeiz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dabeiz" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:dabeidouretriever@sjtu.edu.cn" title="E-Mail → mailto:dabeidouretriever@sjtu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dabei-Z</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/2020/03/22/zero-knowledge-proof/',]
+      });
+      });
+  </script>
+
+</body>
+</html>
