@@ -20,29 +20,33 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="或许能写下去">
-<meta property="og:type" content="website">
-<meta property="og:title" content="DABEI-Z NOTES">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="这是一个可以迅速浏览各个概念的页面。你可以通过快捷键 Ctrl + F 来查询你想要找的内容，也可以在侧边栏的目录里通过标题寻找相关内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概念速览">
+<meta property="og:url" content="http://yoursite.com/2020/03/31/appendix/index.html">
 <meta property="og:site_name" content="DABEI-Z NOTES">
-<meta property="og:description" content="或许能写下去">
+<meta property="og:description" content="这是一个可以迅速浏览各个概念的页面。你可以通过快捷键 Ctrl + F 来查询你想要找的内容，也可以在侧边栏的目录里通过标题寻找相关内容。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/31/appendix/indis-exp.svg">
+<meta property="article:published_time" content="2020-03-31T06:40:11.000Z">
+<meta property="article:modified_time" content="2020-03-31T06:52:45.610Z">
 <meta property="article:author" content="dabei-Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/31/appendix/indis-exp.svg">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2020/03/31/appendix/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false
+    isHome : false,
+    isPost : true
   };
 </script>
 
-  <title>DABEI-Z NOTES</title>
+  <title>概念速览 | DABEI-Z NOTES</title>
   
 
 
@@ -157,10 +161,10 @@
             
 
   <div class="posts-expand">
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/31/appendix/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -174,8 +178,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/31/appendix/" class="post-title-link" itemprop="url">概念速览</a>
+          概念速览
         </h1>
 
         <div class="post-meta">
@@ -209,264 +212,73 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>这是一个可以迅速浏览各个概念的页面。你可以通过快捷键 Ctrl + F 来查询你想要找的内容，也可以在侧边栏的目录里通过标题寻找相关内容。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/31/appendix/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <p>这是一个可以迅速浏览各个概念的页面。你可以通过快捷键 Ctrl + F 来查询你想要找的内容，也可以在侧边栏的目录里通过标题寻找相关内容。</p>
+<a id="more"></a>
+<h1 id="efficient"><a href="#efficient" class="headerlink" title="efficient"></a>efficient</h1><p>说一个算法是 efficient，是指它有着多项式运行时间，即，能在多项式步骤内终止。</p>
+<blockquote>
+<p> An algorithm $A$ runs in polynomial time if there exists a polynomial $p$ such that, for every input $x \in \{0, 1\}^∗$, the computation of $A(x)$ terminates within at most $p(|x|)$ steps. (Here, $|x|$ denotes the length of the string $x$.)   </p>
+<p>—- J. Katz and Y. Lindell. <em>Introduction to modern cryptography 2nd</em>. CRC Press, 2014. p48.</p>
+</blockquote>
+<p>与这个概念相关的另一个概念是 PPT（Probabilistic Polynomial Time），是指一个算法既是随机的同时也有着多项式运行时间。概率型是指算法的输出并不仅由输入决定，而是从一个与输入有关的均匀随机分布中抽取的。</p>
+<h1 id="negligible"><a href="#negligible" class="headerlink" title="negligible"></a>negligible</h1><p>negligible，可以忽略的，指一个函数小于<strong>任何</strong>关于其自变量的多项式的倒数，一般记为 negl。</p>
+<blockquote>
+<p>A function $f(n)$ is negligible if for every positive polynomial $p$ there is an $N$ such that for all integers $n &gt; N$ it holds that $f(n) &lt; \frac{1}{p(n)}$ .</p>
+<p>An equivalent formulation of the above is to require that for all constants $c$ there exists an $N$ such that for all $n &gt; N$ it holds that $f(n) &lt; n^{−c}$ .</p>
+<p>—- J. Katz and Y. Lindell. <em>Introduction to modern cryptography 2nd</em>. CRC Press, 2014. p48.</p>
+</blockquote>
+<p>基于上述定义，我们可以得出下列常用结论：</p>
+<ul>
+<li>$negl_1(n) + negl_2(n)$ 是 negligible 的。</li>
+<li>对任何多项式 $p$，$p(n) \cdot negl(n)$ 同样是 negligible 的。</li>
+</ul>
+<h1 id="indistinguishable"><a href="#indistinguishable" class="headerlink" title="indistinguishable"></a>indistinguishable</h1><p>不可区分的，描述的对象是某两个<strong>分布</strong>之间的关系。注意到对确定的值是不存在是否可区分的问题的。为了解释清楚这个概念，我们引入一个特殊的算法，称为<strong>区分器（distinguisher D）</strong>，它的目标是区分给定的两个分布 $U, V$。为了描述区分的效果，我们引入一个区分<strong>实验（experiment E）</strong>。</p>
+<p>在这个实验 $E$ 中，我们假设区分器是被测试的一方，它能得知的信息是两个公开的随机算法 $U$，$V$（我们认为分布和随机算法的可能输出是等价的）。对于一个输入 $x$，我们（即<strong>测试方，Challenger C</strong>）随机地选择一个算法然后计算出一个确定的输出值 $y$，并将 $(x, y)$ 发送给 D，让 D 来猜这是哪一个算法对应的输出。</p>
+<p><img src="/2020/03/31/appendix/indis-exp.svg" alt="区分实验E"></p>
+<p>对于 D 猜测的结果的判定，我们也定义一个变量，称为 D 在这个实验中的<strong>优势（advantage）</strong>，这个变量的值就等于 D 猜对的概率（即区分成功的概率）减去 $\frac{1}{2}$（这是因为即使 D 没有任何计算能力它都能以 $\frac{1}{2}$ 的概率瞎猜成功）即：</p>
+<script type="math/tex; mode=display">
+Adv_D^E = |Pr[\mbox{D guess right}] - \frac{1}{2}|</script><p>按照区分器的计算能力和区分的结果，可以将两个分布之间的关系分为以下三类：</p>
+<ul>
+<li><p>perfectly indistinguishable 是指即使 D 具有无限的计算能力，也不能区分出 $U$ 和 $V$（即 $Adv_D^E = 0$），此时将两个分布之间的关系记为：</p>
+<script type="math/tex; mode=display">
+U \simeq ^p V</script></li>
+<li><p>statistically indistinguishable 是指即使 D 具有无限的计算能力，它也很难区分 $U$ 和 $V$（即 $Adv_D^E \le negl(|x|)$），此时将两个分布之间的关系记为：</p>
+<script type="math/tex; mode=display">
+U \simeq ^s V</script></li>
+<li><p>computationally indistinguishable 是指对于任何多项式运行时间的 D，它很难区分 $U$ 和 $V$（即 $Adv_D^E \le negl(|x|)$，虽然这时 $U$ 和 $V$ 可能是完全不一样的），此时将两个分布之间的关系记为：</p>
+<script type="math/tex; mode=display">
+U \simeq ^c V</script></li>
+</ul>
+<blockquote>
+<p>—- Note on Commitment Schemes and Zero-Knowledge Protocols by Damgard et al. p4-5. pdf: <a href="https://users-cs.au.dk/~ivan/ComZK08.pdf" target="_blank" rel="noopener">https://users-cs.au.dk/~ivan/ComZK08.pdf</a></p>
+</blockquote>
+
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
         
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/29/commitment-scheme/">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="dabei-Z">
-      <meta itemprop="description" content="或许能写下去">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="DABEI-Z NOTES">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/29/commitment-scheme/" class="post-title-link" itemprop="url">承诺机制</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-29 10:44:12 / 修改时间：10:59:21" itemprop="dateCreated datePublished" datetime="2020-03-29T10:44:12+08:00">2020-03-29</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B4%E7%90%86%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">整理笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>承诺机制 Commitment scheme，顾名思义就是一个人一旦做出了承诺，那么这个人就不能随意改变这个承诺。这个想法最初由 Blum 在 [Blum81] 中提出，这篇论文的标题也很有意思叫做：通过电话抛硬币（Coin Flipping by Telephone）。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/29/commitment-scheme/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/29/commitment-scheme/" rel="prev" title="承诺机制">
+      <i class="fa fa-chevron-left"></i> 承诺机制
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/22/zero-knowledge-proof/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="dabei-Z">
-      <meta itemprop="description" content="或许能写下去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="DABEI-Z NOTES">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/22/zero-knowledge-proof/" class="post-title-link" itemprop="url">零知识证明</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-22 11:46:39 / 修改时间：13:04:45" itemprop="dateCreated datePublished" datetime="2020-03-22T11:46:39+08:00">2020-03-22</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B4%E7%90%86%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">整理笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>零知识证明（Zero Knowledge Proof，ZKP）是指证明者 P 在不透露任何其他信息的情况下能够向验证者 V 证明某个陈述是真的。也就是说，证明结束时，验证者 V 除了知道这个陈述是真的之外，不知道其他<strong>任何</strong>信息。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/22/zero-knowledge-proof/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/15/interactive-proof/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="dabei-Z">
-      <meta itemprop="description" content="或许能写下去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="DABEI-Z NOTES">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/15/interactive-proof/" class="post-title-link" itemprop="url">交互式证明</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-15 20:50:19" itemprop="dateCreated datePublished" datetime="2020-03-15T20:50:19+08:00">2020-03-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-22 12:46:14" itemprop="dateModified" datetime="2020-03-22T12:46:14+08:00">2020-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B4%E7%90%86%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">整理笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>交互式证明系统（Interactive Proof System），是计算复杂理论中的一类计算模型。Goldwasser 等人在 [GMR85] 中从密码学的角度考虑交互证明并且给出了正式的定义。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/15/interactive-proof/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
   </article>
   
   
   
 
   </div>
-
-  
-
 
 
           </div>
@@ -517,6 +329,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#efficient"><span class="nav-number">1.</span> <span class="nav-text">efficient</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#negligible"><span class="nav-number">2.</span> <span class="nav-text">negligible</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#indistinguishable"><span class="nav-number">3.</span> <span class="nav-text">indistinguishable</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -697,7 +510,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/2020/03/31/appendix/',]
       });
       });
   </script>
