@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ZKPoK（Zero Knowledge Proof of Knowledge）是指对于知识的零知识证明，主体是对于知识的证明（PoK），ZK 是描述性质的修饰词，指这个证明同时也满足一些零知识性。具体来说，这个证明要求证明者 P 向验证者 V 证明自己知道某些秘密的值但 V 无法得知这个值。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知识的零知识证明">
+<meta property="og:url" content="http://yoursite.com/2020/04/05/proof-of-knowledge/index.html">
+<meta property="og:site_name" content="DABEI-Z NOTES">
+<meta property="og:description" content="ZKPoK（Zero Knowledge Proof of Knowledge）是指对于知识的零知识证明，主体是对于知识的证明（PoK），ZK 是描述性质的修饰词，指这个证明同时也满足一些零知识性。具体来说，这个证明要求证明者 P 向验证者 V 证明自己知道某些秘密的值但 V 无法得知这个值。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/04/05/proof-of-knowledge/sigma.svg">
+<meta property="og:image" content="http://yoursite.com/2020/04/05/proof-of-knowledge/schnorr.svg">
+<meta property="article:published_time" content="2020-04-05T04:10:02.000Z">
+<meta property="article:modified_time" content="2020-04-05T05:02:26.359Z">
+<meta property="article:author" content="dabei-Z">
+<meta property="article:tag" content="zero knowledge">
+<meta property="article:tag" content="proof of knowledge">
+<meta property="article:tag" content="sigma protocol">
+<meta property="article:tag" content="schnorr protocol">
+<meta property="article:tag" content="extractor">
+<meta property="article:tag" content="rewind">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/04/05/proof-of-knowledge/sigma.svg">
+
+<link rel="canonical" href="http://yoursite.com/2020/04/05/proof-of-knowledge/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>知识的零知识证明 | DABEI-Z NOTES</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DABEI-Z NOTES</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/05/proof-of-knowledge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="dabei-Z">
+      <meta itemprop="description" content="或许能写下去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DABEI-Z NOTES">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          知识的零知识证明
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-05 12:10:02 / 修改时间：13:02:26" itemprop="dateCreated datePublished" datetime="2020-04-05T12:10:02+08:00">2020-04-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B4%E7%90%86%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">整理笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>ZKPoK（Zero Knowledge Proof of Knowledge）是指对于知识的零知识证明，主体是对于知识的证明（PoK），ZK 是描述性质的修饰词，指这个证明同时也满足一些零知识性。具体来说，这个证明要求证明者 P 向验证者 V 证明自己知道某些秘密的值但 V 无法得知这个值。</p>
+<a id="more"></a>
+<h1 id="为什么要-PoK？"><a href="#为什么要-PoK？" class="headerlink" title="为什么要 PoK？"></a>为什么要 PoK？</h1><p>上面这个简述听起来很像 ZK 做的事啊？那为什么还要引入 PoK 呢？</p>
+<p>要回答这个问题，我们可以回忆一下在 ZKP（或者更一般性的 IP）中，完备性和可靠性的定义关注的是要证明某个对像 $x$ 是否属于给定的语言 $L$，以及 $R_L(x)$ 中是否存在一个秘密值 $\omega$（称为 witness），除此之外它并没有真正关心证明者是否知道这个秘密值 $\omega$。虽然在很多的举例中，证明者确实需要知道这个秘密值 $\omega$ 才能满足零知识性的要求，但是也存在一些<strong>平凡（trival）</strong>的情况。</p>
+<p>比如说，要证明某个图（graph）中存在一条由 A 到 B 的最短路径，那么语言 $L$ 就是所有存在这样最短路径的图的集合，对象 $x$ 就是某个图 $G$。很显然任何图中都存在一条 A 到 B 的最短路径，换句话说，任何关于某个对象 $x$ 属于语言 $L$ 的陈述都是真的。此时，即使 P 不知道这条最短路径到底由哪些边组成，它也可以肯定这条最短路径是存在的，相应的，它就可以回答给 V 说这个陈述是真的。ZK 性质也可以验证通过。</p>
+<p>又比如说，当我们要登录某个账号时，仅仅证明存在某个私钥（private key）与这个账号对应是不够的（这就是平凡情况，因为任何有效账号肯定都有一个对应的私钥），我们一定要证明我们知道这个账号具体对应哪个私钥才可以。</p>
+<p>因此，对于这些情况，只有 ZK 约束是不够的，需要更严格的定义要求 P 要证明自己的确知道秘密值 $\omega$ 才行，这就是对于知识的证明（PoK）。</p>
+<p>那为什么还要在 PoK 前加上 ZK 约束呢？这个问题还是很好回答的。我们可以设想一下，P 完全可以直接把秘密值 $\omega$ 发给 V 就可以满足 PoK 的要求。这就没有乐趣了。于是再加上 ZK，要求 V 在证明协议结束后，不知道这个秘密值才行。</p>
+<h1 id="PoK-的定义"><a href="#PoK-的定义" class="headerlink" title="PoK 的定义"></a>PoK 的定义</h1><p>交互证明中的完备性和可靠性以及零知识证明中的零知识性在这里就不再赘述。我们直接给出 PoK 的性质。</p>
+<hr>
+<p><strong>（Definition：PoK）</strong> An interactive proof system $(P, V)$ for an NP relation $R_L$ is a proof of knowledge with knowledge error $\epsilon$, if there exists an algorithm $\mathcal{E}$, called a knowledge extractor, that runs in expected polynomial time, and such that for every $\omega$ and every prover $P$*:</p>
+<script type="math/tex; mode=display">
+Pr[ \ (x, \omega) \in R_L: \omega \gets \mathcal{E}^{P^*}(x) \ ] \ge Pr[ \ \langle P^*, V \rangle (x) = 1 \ ] - \epsilon (|x|)</script><hr>
+<p>这个定义是说，如果 P*（不管是诚实的证明者还是准备骗取信任的恶意证明者） 能够说服 V，那么就存在一个名为<strong>知识抽取器（knowledge extractor）</strong>的算法 $\mathcal{E}$，该算法通过和 P* 的交互可以输出秘密值 $\omega$。注意定义中允许事件1（P* 能说服 V）和事件2（知识抽取器 $\mathcal{E}$ 可以通过和 P* 的交互输出 $\omega$）发生的概率之间存在一个差值函数。这个差值我们称之为 <strong>knowledge error</strong>，这可以认为是事件3（不知道秘密值 $\omega$ 的恶意证明者成功说服 V）发生的概率。因此 PoK 性质又可以称为 <strong>Knowledge soundness</strong> 性质。</p>
+<p>与 ZKP 的情况类似，ZKP 为了能够正式定义“V 除了知道陈述是真的之外一无所知”这个要求，引入了模拟器（simulator）。在 PoK 中，为了定义“P 确实知道秘密值 $\omega$”这个要求，引入了知识抽取器算法（knowledge extractor）。我们可以试着从逻辑上来理解这个知识抽取器的作用。</p>
+<p>考虑到 PoK 防止那些不知道秘密值 $\omega$ 的恶意证明者去骗取 V 的信任，因此 PoK 实际上要求的是“如果证明者没有秘密值 $\omega$，那么它就无法得到 V 的信任”，用命题逻辑的方式表达就是：</p>
+<script type="math/tex; mode=display">
+P^*\mbox{ 不知道 }\omega \Longrightarrow V \mbox{ 认为 } P^* \mbox{ 验证不通过}</script><p>考虑与其等价的逆否命题，即为</p>
+<script type="math/tex; mode=display">
+V \mbox{ 认为 } P^* \mbox{ 验证通过} \Longrightarrow P^*\mbox{ 知道 }\omega</script><p>因此，知识抽取器就是在事件（P* 能说服 V 让其验证通过）的基础上，通过和 P* 的交互，从 P* 的输出中计算（抽取）出 P* 掌握的秘密值 $\omega$。</p>
+<p>接下来的问题是：既然可以从 P* 的输出中计算出这个秘密值，而又考虑到 P* 与 V 的交互是公开可见的，那么难道随便一个人看到了这些交互之后都能用同样的算法计算出秘密值吗？当然不可能！所以知识抽取器一定是有什么特殊的性质。</p>
+<p>知识抽取器的特殊性在于，它可以控制在与证明者交互时，随意地<strong>倒带（rewind）</strong>。这是一个很强大地功能。强大在哪呢？我们可以考虑一下，如果在 <a href="https://dabeiz.github.io/2020/03/22/zero-knowledge-proof/" target="_blank" rel="noopener">GI 的 ZKP</a> 中 V 拥有这样的功能，那它可以利用这个倒带功能，在 P 回答 V 的提问（V 的提问我们称为<strong>挑战 challenge</strong>）之后，倒回到 V 发出挑战 $b$ 的时间点，又给 P 一个不同的挑战 $b’ = 1-b$，这样验证者就可以通过倒带，得到 $b=0$ 和 $b=1$ 的两个挑战的回答，假设分别为 $\phi$ 和 $\phi’$。仔细观察 P 的这两个回答，我们会发现，V 只需要简单地计算 $\omega = \phi \circ \phi’$ 就能得到秘密值 $\omega$ ！</p>
+<h1 id="倒带（Rewind）"><a href="#倒带（Rewind）" class="headerlink" title="倒带（Rewind）"></a>倒带（Rewind）</h1><p>这个类似于拥有时间倒流的能力的概念靠谱吗？怎么感觉很玄学呢？我们难道能随意地设计一些很神奇的概念去解决任何事情吗？这不禁让我想起高中班主任说我们做几何题时总喜欢设一些“万能点”，“万能线”，有了这些满足很多性质的万能点线，几何证明难题迎刃而解。但是问题在于，万能点线的存在前提是要证明的性质被满足，而我们又用这些万能点线去证明这些性质。这不是陷入了死循环嘛！这种做法当然是不可取的。很神奇的概念也是需要理论支撑的。支撑倒带（rewind）的理论基础叫：<strong>Rewinding Lemma</strong>。下面给出这个引理的具体描述，[BS20] 书中有这个引理的详细证明。</p>
+<hr>
+<p><strong>（Rewinding Lemma）</strong>    Let $S$ and $T$ be finite and non-empty sets, and let $f: S \times T \to {0, 1} $ be a function. Let $X$, $Y$, and $Y’$ be mutually independent random variables, where $X$ takes values in the set $S$, and $Y$ and $Y’$ are each uniformly distributed over $T$. Let $\epsilon := Pr[ f(X, Y) = 1] $ and $N := |T|$. Then</p>
+<script type="math/tex; mode=display">
+Pr[f(X, Y) = 1 \land f(X, Y')=1 \land Y \ne Y'] \ge \epsilon^2 - \frac{\epsilon}{N}</script><hr>
+<p>有了这个引理，我们就可以重新解释倒带（rewind）到底在做什么了。考虑不同的挑战（challenge）对应变量 $Y$ 和 $Y’$，$X$ 对应着其余的随机量。函数 $f$ 的输出对应着是否验证通过。因此对于以概率 $\epsilon$ 成功验证通过的 P，它实际上至少能以概率 $\epsilon^2 - \frac{\epsilon}{N}$（其中 $N$ 是<strong>挑战空间 challenge space</strong>的大小，即可能的挑战的个数）成功验证通过同一情况下 V 提出的两个不同的挑战。这一行为看上去就像是得到一个 P 对于挑战的回答后，又倒带（rewind）回 V 提出挑战的时间点，再重复一遍（这一遍中挑战可以变得不同）证明协议。因此知识抽取器 $\mathcal{E}$ 利用这些不同挑战对应的<strong>验证通过的交互记录（accepting transcript，或者也称 accepting conversation）</strong>去计算秘密值是合理的。</p>
+<h1 id="Σ-protocol"><a href="#Σ-protocol" class="headerlink" title="Σ-protocol"></a>Σ-protocol</h1><p><img src="/2020/04/05/proof-of-knowledge/sigma.svg" alt="Sigma protocol"></p>
+<p>如图所示是一个 $\Sigma$-协议（Sigma-protocol）的一般表达。顺便说一句，叫这个名字是因为协议中交互的顺序使得中间的公开交互记录形如一个“$\Sigma$”（好吧，为了让它更像 $\Sigma$，我特意把图中共同输入部分平躺着画了）。$\Sigma$-协议是交互式证明中较特殊但是在密码学中使用特别广泛的一类证明协议。大多数的 PoK 都遵循 $\Sigma$-协议的形式。它规定证明者 P 先向验证者 V 发送一个承诺，V收到这个承诺后，从挑战空间（challenge space）中选择一个挑战发送给 P，P 再返回给 V 这个挑战的计算结果，最后 V 再输出是否验证通过。</p>
+<p>基于 $\Sigma$-协议，PoK（或者Knowledge soundness）又可以表述成 Special soundness。差异在于，special soundness 中直接就给出了两个验证通过的交互记录，就不需要算法再去倒带（rewind）了，而可以直接计算 $\omega$。另外，可以看到 special soundness 和 IP 中的 soundness 不同在于，普通的 soundness 性质只要求 V 不接受一切陈述是假时的交互记录，而这个定义则要求 V 即使在陈述是真的情况下也只接受那些知道秘密值 $\omega$ 的 P 与它产生的交互记录。这就是 special soundness 特殊的地方。</p>
+<hr>
+<p><strong>（Definition：Special soundness）</strong>    Given any common input $x$ and any pair of accepting conversations on input $x$, i.e. $(t, c, z)$, $(t, c’, z’)$ where $c \ne c’$, one can efficiently compute $\omega$ such that $(x, \omega) \in R_L$. </p>
+<hr>
+<p>注意，special soundness 严格说起来比 PoK 性质更强，因为 special soundness 只要求得到两个验证通过的交互记录（相当于 rewind 一次）就可以提取出秘密值，但 PoK 对 rewind 的次数没有限定，可能一次也可以多次。</p>
+<p>但同时，$\Sigma$-协议也有缺点，就是它无法满足严格的 ZK 性质，而只能退而求其次，满足 (special-) Honest Verifier Zero-Knowledge（HVZK）性质。这是因为 $\Sigma$-协议在定义中要求验证者 V 选择的挑战是从挑战空间中随机选取的，这样才能保证协议的安全（这样构造模拟器来证明零知识性时就可以满足要求）。但是对于一些恶意的 V，它不遵循这个规则，那么就可能会产生安全上的漏洞。当然也有办法强制 V 必须要遵守规则，就是在协议开始之初，V 必须首先发出一个承诺表示自己确实遵守了协议规则。但这样做就增加了一个交互信息（one-move），导致协议效率降低。同时考虑到 (special-) HVZK 已经可以满足大多数场景的需求，因此在协议设计时仅考虑 (special-) HVZK 是很常见的选择。</p>
+<p>注意，HVZK 只是在定义 ZK 的基础上增加了对 V 要是诚实的限制，模拟器还是可以和 V 交互的；而 special HVZK 则在定义中移除了与 V 交互的部分，转而直接给模拟器输入 $(c, z)$，让模拟器输出一个 $t$ 使得 $(t, c, z)$ 符合 HVZK 时定义的分布关系。因此 special HVZK 证明过程相当于提前得到了挑战和回复，要“凑出”对应的承诺。这一点在下面的实例中将会看到。</p>
+<h1 id="Schnorr’s-protocol"><a href="#Schnorr’s-protocol" class="headerlink" title="Schnorr’s protocol"></a>Schnorr’s protocol</h1><p>下面我们来看一个 $\Sigma$-协议在离散对数（Discrete-Log）中的具体构造：Schnorr’s 协议。最初由 [Sch91] 提出，这里给出的是其中的身份认证（identification）部分对应的 $\Sigma$-协议。</p>
+<p>构造具体为：设 $p, q$ 为两个大质数，且满足 $q | (p-1)$；设 $G_q$ 为 $\mathbb{Z}_p^*$ 的阶为 $q$ 的（唯一）子群；设 $g$ 为 $G_q$ 的一个生成元。现在随机地从 $\mathbb{Z}_q$ 中选取 $\omega$，并设 $h:= g^{\omega}$。那么共同输入即为 $x := (G_q, g, h)$，而 $\omega$ 则为 P 的秘密输入。设 $\lambda$ 为安全参数。</p>
+<p><img src="/2020/04/05/proof-of-knowledge/schnorr.svg" alt="Schnorr&#39;s protocol"></p>
+<p>现对于上述协议证明其满足以下性质：</p>
+<ul>
+<li><p>Completeness：对于诚实的 P 和 V 的交互记录，验证总是可以通过，</p>
+<script type="math/tex; mode=display">
+g^z = g^{c \cdot \omega + r} = (g^{\omega})^c \cdot g^r = h^c \cdot t</script></li>
+<li><p>Special HVZK：给定随机选取的 $(c, z)$，即 $c \gets \{0, 1\}^{\lambda}$, $z \gets \mathbb{Z}_q$，那么可以计算出对应的 $t$ 为</p>
+<script type="math/tex; mode=display">
+t := (h^c)^{-1} \cdot g^z</script><p>同时注意到这样得到的 $(t, c, z)$ 与真实的交互记录在分布上是不可区分的，即两者都是满足验证式的随机值。</p>
+</li>
+<li><p>Special soundness：给定两个相同承诺下的验证通过的交互记录 $(t, c, z)$ 和 $(t, c’, z’)$，那么从中可以计算出 $\omega$ 为</p>
+<script type="math/tex; mode=display">
+\omega := (z-z') \cdot (c-c')^{-1}</script></li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><p>Lecture notes of Stanford CS 355: Topics in Cryptography (Spring 2019)</p>
+<p>pdf: <a href="https://crypto.stanford.edu/cs355/19sp/lec5.pdf" target="_blank" rel="noopener">https://crypto.stanford.edu/cs355/19sp/lec5.pdf</a></p>
+</li>
+<li><p>[BS20]: Dan Boneh, Victor Shoup. “A Graduate Course in Applied Cryptography, version 0.5”.</p>
+<p>website: <a href="https://toc.cryptobook.us/" target="_blank" rel="noopener">https://toc.cryptobook.us/</a></p>
+</li>
+<li><p>[Dam10]: Ivan Damgard. “On Σ-protocols, CPT 2010, v.2”.</p>
+<p>pdf: <a href="https://cs.au.dk/~ivan/Sigma.pdf" target="_blank" rel="noopener">https://cs.au.dk/~ivan/Sigma.pdf</a></p>
+</li>
+<li><p>[Sch91]: C. P. Schnorr. “Efficient signature generation by smart cards”. <em>Journal of Cryptography</em>, 4(3): 161-174, 1991.</p>
+<p>doi: <a href="https://doi.org/10.1007/BF00196725" target="_blank" rel="noopener">https://doi.org/10.1007/BF00196725</a></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/zero-knowledge/" rel="tag"># zero knowledge</a>
+              <a href="/tags/proof-of-knowledge/" rel="tag"># proof of knowledge</a>
+              <a href="/tags/sigma-protocol/" rel="tag"># sigma protocol</a>
+              <a href="/tags/schnorr-protocol/" rel="tag"># schnorr protocol</a>
+              <a href="/tags/extractor/" rel="tag"># extractor</a>
+              <a href="/tags/rewind/" rel="tag"># rewind</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/29/commitment-scheme/" rel="prev" title="承诺机制">
+      <i class="fa fa-chevron-left"></i> 承诺机制
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/05/efficient/" rel="next" title="Efficient">
+      Efficient <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么要-PoK？"><span class="nav-number">1.</span> <span class="nav-text">为什么要 PoK？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PoK-的定义"><span class="nav-number">2.</span> <span class="nav-text">PoK 的定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#倒带（Rewind）"><span class="nav-number">3.</span> <span class="nav-text">倒带（Rewind）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Σ-protocol"><span class="nav-number">4.</span> <span class="nav-text">Σ-protocol</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Schnorr’s-protocol"><span class="nav-number">5.</span> <span class="nav-text">Schnorr’s protocol</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dabei-Z"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">dabei-Z</p>
+  <div class="site-description" itemprop="description">或许能写下去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dabeiz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dabeiz" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:dabeidouretriever@sjtu.edu.cn" title="E-Mail → mailto:dabeidouretriever@sjtu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dabei-Z</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/2020/04/05/proof-of-knowledge/',]
+      });
+      });
+  </script>
+
+</body>
+</html>
