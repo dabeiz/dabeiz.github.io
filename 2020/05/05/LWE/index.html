@@ -20,19 +20,25 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="negligible，可以忽略的，指一个函数小于任何关于其自变量的多项式的倒数，一般记为 negl。">
+  <meta name="description" content="在了解了 SIS 问题后，我们开始介绍另一个格中的困难问题假设：LWE（Learning With Errors）问题。LWE 问题比 SIS 问题稍显复杂，但是由于 LWE 问题可以归约到 SIS 问题，因此 LWE 问题内在与 SIS 问题又存在着联系。下面我们先给出 LWE 的定义再来讨论它与 SIS 的关系。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Negligible">
-<meta property="og:url" content="http://yoursite.com/2020/04/05/negligible/index.html">
+<meta property="og:title" content="LWE 问题">
+<meta property="og:url" content="http://yoursite.com/2020/05/05/LWE/index.html">
 <meta property="og:site_name" content="DABEI-Z NOTES">
-<meta property="og:description" content="negligible，可以忽略的，指一个函数小于任何关于其自变量的多项式的倒数，一般记为 negl。">
+<meta property="og:description" content="在了解了 SIS 问题后，我们开始介绍另一个格中的困难问题假设：LWE（Learning With Errors）问题。LWE 问题比 SIS 问题稍显复杂，但是由于 LWE 问题可以归约到 SIS 问题，因此 LWE 问题内在与 SIS 问题又存在着联系。下面我们先给出 LWE 的定义再来讨论它与 SIS 的关系。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-04-05T04:27:28.000Z">
-<meta property="article:modified_time" content="2020-04-05T04:36:03.860Z">
+<meta property="og:image" content="http://yoursite.com/2020/05/05/LWE/lwe.svg">
+<meta property="article:published_time" content="2020-05-05T14:22:29.000Z">
+<meta property="article:modified_time" content="2020-05-05T14:49:49.547Z">
 <meta property="article:author" content="dabei-Z">
+<meta property="article:tag" content="lattice">
+<meta property="article:tag" content="learning with errors">
+<meta property="article:tag" content="lwe distribution">
+<meta property="article:tag" content="reduction">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/05/LWE/lwe.svg">
 
-<link rel="canonical" href="http://yoursite.com/2020/04/05/negligible/">
+<link rel="canonical" href="http://yoursite.com/2020/05/05/LWE/">
 
 
 <script id="page-configurations">
@@ -44,7 +50,7 @@
   };
 </script>
 
-  <title>Negligible | DABEI-Z NOTES</title>
+  <title>LWE 问题 | DABEI-Z NOTES</title>
   
 
 
@@ -163,7 +169,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/05/negligible/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/05/LWE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -176,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Negligible
+          LWE 问题
         </h1>
 
         <div class="post-meta">
@@ -187,7 +193,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-05 12:27:28 / 修改时间：12:36:03" itemprop="dateCreated datePublished" datetime="2020-04-05T12:27:28+08:00">2020-04-05</time>
+              <time title="创建时间：2020-05-05 22:22:29 / 修改时间：22:49:49" itemprop="dateCreated datePublished" datetime="2020-05-05T22:22:29+08:00">2020-05-05</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -195,7 +201,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%A6%82%E5%BF%B5%E9%80%9F%E8%A7%88/" itemprop="url" rel="index"><span itemprop="name">概念速览</span></a>
+                  <a href="/categories/%E8%AE%B0%E5%BD%95%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">记录笔记</span></a>
                 </span>
             </span>
 
@@ -210,17 +216,54 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>negligible，可以忽略的，指一个函数小于<strong>任何</strong>关于其自变量的多项式的倒数，一般记为 negl。</p>
+        <p>在了解了 SIS 问题后，我们开始介绍另一个格中的困难问题假设：LWE（Learning With Errors）问题。LWE 问题比 SIS 问题稍显复杂，但是由于 LWE 问题可以归约到 SIS 问题，因此 LWE 问题内在与 SIS 问题又存在着联系。下面我们先给出 LWE 的定义再来讨论它与 SIS 的关系。</p>
 <a id="more"></a>
-<blockquote>
-<p>A function $f(n)$ is negligible if for every positive polynomial $p$ there is an $N$ such that for all integers $n &gt; N$ it holds that $f(n) &lt; \frac{1}{p(n)}$ .</p>
-<p>An equivalent formulation of the above is to require that for all constants $c$ there exists an $N$ such that for all $n &gt; N$ it holds that $f(n) &lt; n^{−c}$ .</p>
-<p>—- J. Katz and Y. Lindell. <em>Introduction to modern cryptography 2nd</em>. CRC Press, 2014. p48.</p>
+<h1 id="LWE-的定义"><a href="#LWE-的定义" class="headerlink" title="LWE 的定义"></a>LWE 的定义</h1><p>LWE 问题最初由 Regev 在 [Reg05] 中提出，是一个和 SIS 类似（analogue）的问题。我们在给出 LWE 问题的定义前，需要先引入一个与之密切相关的分布称为 LWE 分布。</p>
+<hr>
+<p><strong>LWE distribution</strong></p>
+<p>For a vector $\mathbf{s} \in \mathbb{Z}_q^n$ called the <em>secret</em>, the LWE distribution $A_{\mathbf{s}, \chi}$ over $\mathbb{Z}_q^n \times \mathbb{Z}_q$ is sampled by choosing $\mathbf{a} \in \mathbb{Z}_q^n$ uniformly at random, choosing $e \gets \chi$ and outputting</p>
+<script type="math/tex; mode=display">
+(\mathbf{a}, b=\langle \mathbf{s, a} \rangle + e \mod q)</script><blockquote>
+<p>— by [Pei16] in p.22</p>
 </blockquote>
-<p>基于上述定义，我们可以得出下列常用结论：</p>
-<ul>
-<li>$negl_1(n) + negl_2(n)$ 是 negligible 的。</li>
-<li>对任何多项式 $p$，$p(n) \cdot negl(n)$ 同样是 negligible 的。</li>
+<hr>
+<p>这个分布简单来说就是先选择一个可以公开的向量 $\mathbf{a}$，然后用秘密值 $\mathbf{s}$ 去和 $\mathbf{a}$ 做内积，但是特殊在于内积之后还会加上一个误差项 $e$（$e$ 从一个特定的误差分布 $\chi$ 中选取），将得到的结果 $b$ 与可公开的 $\mathbf{a}$ 作为二元组一同输出。而由于 $\mathbf{a}$ 和 $e$ 本身并不固定而是从特定的分布中选取的，于是得到的二元组 $(\mathbf{a}, b)$ 也是一个分布。显然这个分布并不是随机分布，因为客观存在着一个 $\mathbf{s}$ 满足 $b=\langle \mathbf{s, a} \rangle + e \mod q$，但是如果没有这个 $\mathbf{s}$，这个分布看起来就和随机分布不可区分，也无法从这个分布中把 $\mathbf{s}$。这也是下面要说的 LWE 问题的两种版本。</p>
+<p>LWE 有两种版本，一种是 decision-LWE，一种是 search-LWE。联系 LWE 分布的定义并且再加上一点点望文生义（或者我们可以类比 DDH 与 CDH 来思考），其实可以很容易就猜出这两种版本的 LWE 形式。下面给出它们的具体定义：</p>
+<hr>
+<p><strong>Search-$\mbox{LWE}_{n, q, \chi, m}$​</strong></p>
+<p>Given m independent samples $(\mathbf{a}_i, b_i) \in \mathbb{Z}_q^n \times \mathbb{Z}_q$ drawn from $A_{\mathbf{s}, \chi}$ for a uniformly random $\mathbf{s} \in \mathbb{Z}_q^n$ (fixed for all samples), find $\mathbf{s}$.</p>
+<p><strong>Descision-$\mbox{LWE}_{n, q, \chi, m}$</strong></p>
+<p>Given $m$ independent samples $(\mathbf{a}_i, b_i) \in \mathbb{Z}_q^n \times \mathbb{Z}_q$ where every sample is distributed according to either: </p>
+<p>​    (1) $A_{\mathbf{s}, \chi}$ for a uniformly random $\mathbf{s} \in \mathbb{Z}_q^n$ (fixed for all samples), or </p>
+<p>​    (2) the uniform distribution, </p>
+<p>distinguish which is the case (with non-negligible advantage).</p>
+<blockquote>
+<p>— by [Pei16] in p.22</p>
+</blockquote>
+<hr>
+<h1 id="LWE-的讨论"><a href="#LWE-的讨论" class="headerlink" title="LWE 的讨论"></a>LWE 的讨论</h1><p>从 LWE 分布的生成过程可以发现，如果没有最后加上去的误差项（error）$e$，那么不管是 decision-LWE 还是 search-LWE 都可以很简单地通过高斯消元法来解决，因此可以说 LWE 的密码学意义全在于它的误差项 $e$，于是 $e$ 的选择就非常重要。</p>
+<h2 id="关于误差项-e-的选择"><a href="#关于误差项-e-的选择" class="headerlink" title="关于误差项 $e$ 的选择"></a>关于误差项 $e$ 的选择</h2><p>从定义看出，误差项是从误差分布 $\chi$ 中选出来的，误差分布一般都是一个高斯分布，这是由于高斯分布的优良性质（其实主要是因为现在对于高斯分布的研究比较透彻）。因此误差项的选择其实就是要确定这个高斯分布的参数。这里不打算仔细地讨论高斯分布的参数选择问题，因为这涉及到 LWE 的困难性问题，也就是从 SIVP 和 GapSVP（worst-case）到 LWE（average-case）的归约证明。最后确定参数为 $\alpha \cdot q$，其中 $\alpha$ 称为 error rate，它远小于 1。</p>
+<h2 id="LWE-问题的-lattice-表示"><a href="#LWE-问题的-lattice-表示" class="headerlink" title="LWE 问题的 lattice 表示"></a>LWE 问题的 lattice 表示</h2><p>为了让 LWE 问题在格密码学中发挥作用，我们同样需要将 LWE 的定义对应到某个格上。注意到除去误差项 $e$，LWE 定义中的 $b$ 的剩余部分 $\langle \mathbf{s, a} \rangle$ 似乎是符合 lattice 格点的规律性的，因此我们可以将这一部分与格点对应起来，由此得到下述表达式：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}(\mathbf{A}) := \{\mathbf{A}^t \mathbf{s : s} \in \mathbb{Z}_q^n \} + q\mathbb{Z}^m</script><p>其中 $\mathbf{A}$ 为所有公开的 $\mathbf{a}_i$ 构成的矩阵，这么做只是为了将从同一 LWE 分布 $A_{\mathbf{s}, \chi}$ 中选取的多个样本 $(\mathbf{a}_i, b_i)$ 紧凑地表达出来，此时我们有 $\mathbf{b = A}^t\mathbf{s + e} \mod q$，同理 $\mathbf{b}$ 是所有样本中 $b_i$ 构成的向量，$\mathbf{e}$ 是所有样本中 $e_i$ 构成的向量。</p>
+<p>同样我们在这里给出一个二维的示意图来阐述 LWE 问题与 $\mathcal{L}(A)$ 的对应关系。从图中可以看出 LWE 问题给定了一个平面中的点（根据 LWE 分布，这个点实际上离某个格点非常相近），而要解决 LWE 问题就是就是要找到这个离它非常近的格点，或者等价的，找到这两个点之间的差值，即误差 $\mathbf{e}$。</p>
+<p><img src="/2020/05/05/LWE/lwe.svg" alt="lwe"></p>
+<h2 id="关于-SIS-与-LWE-的关系"><a href="#关于-SIS-与-LWE-的关系" class="headerlink" title="关于 SIS 与 LWE 的关系"></a>关于 SIS 与 LWE 的关系</h2><p>首先来说他们之间的归约关系：$\mbox{decision-LWE} \le_\mbox{(reduce to)} \mbox{SIS}$。也就是说，若能解决 SIS 问题，则可以利用 SIS Oracle 去解决 decision-LWE 问题。具体做法为：在拿到 decision-LWE 的样本 $(\mathbf{A, b})$ 后，只需要向 SIS Oracle 询问（query）$\mathbf{Az=0}$ 的解 $\mathbf{z}$，再计算 $\mathbf{b}^t \mathbf{z}$ 就可以知道拿到的样本是服从 LWE 分布还是随机分布。因为如果是服从 LWE 分布，则此时有：</p>
+<script type="math/tex; mode=display">
+\mathbf{b}^t \mathbf{z} = (\mathbf{A}^t \mathbf{s + e})^t \mathbf{z} = \mathbf{s}^t \mathbf{Az} + \mathbf{e}^t\mathbf{z} = \mathbf{e}^t\mathbf{z}</script><p>而因为误差项 $\mathbf{e}$ 较小，与 $\mathbf{z}$ 做内积后依然很小，这与随机分布的情况得到的结果就完全不同，以这个为依据就可以完全解决 decision-LWE。</p>
+<p>其次，SIS 问题与 LWE 问题对应的 lattice 也有着对偶关系：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}(A) = q \cdot \mathcal{L}^{\perp}(A)^*</script><p>最后，这两个问题的应用范围也不尽相同。同样是格中的困难问题假设，LWE 问题似乎比 SIS 的应用范围更广泛。SIS 一般可以用来构造一些 “minicrypt” 比如说 OWF/CRHF，digital signature，ID scheme 等机制，但至今没有一个 PKE 是基于 SIS 的；相反 LWE可 以实现 “cryptomania”，包括 FHE，PKE，IBE 等等。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><p>[Reg05]: O. Regev. On lattices, learning with errors, random linear codes, and cryptography. In STOC, pages 84-93. 2005.</p>
+<p>url: <a href="https://dl.acm.org/doi/10.1145/1060590.1060603" target="_blank" rel="noopener">https://dl.acm.org/doi/10.1145/1060590.1060603</a></p>
+</li>
+<li><p>[Pei16]: C. Peikert. <em>A Decade of Lattice Cryptography</em>. 2016.</p>
+<p>pdf: <a href="https://web.eecs.umich.edu/~cpeikert/pubs/lattice-survey.pdf" target="_blank" rel="noopener">https://web.eecs.umich.edu/~cpeikert/pubs/lattice-survey.pdf</a></p>
+</li>
+<li><p>Talk by C. Peiker about Learning With Errors on the 2nd Bar Ilan Winter School. 2012.</p>
+<p>video: <a href="https://www.youtube.com/watch?v=Fp-IiVpgDlc" target="_blank" rel="noopener">https://www.youtube.com/watch?v=Fp-IiVpgDlc</a></p>
+</li>
 </ul>
 
     </div>
@@ -230,6 +273,12 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/lattice/" rel="tag"># lattice</a>
+              <a href="/tags/learning-with-errors/" rel="tag"># learning with errors</a>
+              <a href="/tags/lwe-distribution/" rel="tag"># lwe distribution</a>
+              <a href="/tags/reduction/" rel="tag"># reduction</a>
+          </div>
 
         
 
@@ -237,13 +286,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/04/05/efficient/" rel="prev" title="Efficient">
-      <i class="fa fa-chevron-left"></i> Efficient
+    <a href="/2020/04/28/SIS/" rel="prev" title="SIS 问题">
+      <i class="fa fa-chevron-left"></i> SIS 问题
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/04/05/indistinguishable/" rel="next" title="Indistinguishable">
-      Indistinguishable <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -303,6 +349,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LWE-的定义"><span class="nav-number">1.</span> <span class="nav-text">LWE 的定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LWE-的讨论"><span class="nav-number">2.</span> <span class="nav-text">LWE 的讨论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于误差项-e-的选择"><span class="nav-number">2.1.</span> <span class="nav-text">关于误差项 $e$ 的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LWE-问题的-lattice-表示"><span class="nav-number">2.2.</span> <span class="nav-text">LWE 问题的 lattice 表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于-SIS-与-LWE-的关系"><span class="nav-number">2.3.</span> <span class="nav-text">关于 SIS 与 LWE 的关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -483,7 +530,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/2020/04/05/negligible/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/2020/05/05/LWE/',]
       });
       });
   </script>
