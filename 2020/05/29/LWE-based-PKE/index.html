@@ -20,23 +20,26 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="和基于数论的公钥密码学依靠诸如 RSA、DDH 和 CDH 等困难问题假设类似，基于格的密码学同样有着这样的困难问题假设，分别为 SIS（Short Integer Solution）问题和 LWE（Learning With Errors）问题。这里我们先来详细介绍 SIS 问题。">
+  <meta name="description" content="格密码学中有两种主要的基于 LWE 假设的公钥加密构造方法，分别为 [Reg05] 中提出的原始版本和 [GPV08] 中提出的对偶（Dual）版本。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SIS 问题">
-<meta property="og:url" content="http://yoursite.com/2020/04/28/SIS/index.html">
+<meta property="og:title" content="基于LWE的公钥加密机制构造">
+<meta property="og:url" content="http://yoursite.com/2020/05/29/LWE-based-PKE/index.html">
 <meta property="og:site_name" content="DABEI-Z NOTES">
-<meta property="og:description" content="和基于数论的公钥密码学依靠诸如 RSA、DDH 和 CDH 等困难问题假设类似，基于格的密码学同样有着这样的困难问题假设，分别为 SIS（Short Integer Solution）问题和 LWE（Learning With Errors）问题。这里我们先来详细介绍 SIS 问题。">
+<meta property="og:description" content="格密码学中有两种主要的基于 LWE 假设的公钥加密构造方法，分别为 [Reg05] 中提出的原始版本和 [GPV08] 中提出的对偶（Dual）版本。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/2020/04/28/SIS/sis.svg">
-<meta property="article:published_time" content="2020-04-28T08:48:26.000Z">
-<meta property="article:modified_time" content="2020-05-29T13:39:21.367Z">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/LWE-based-PKE/regev05.svg">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/LWE-based-PKE/gpv08.svg">
+<meta property="article:published_time" content="2020-05-29T13:32:45.000Z">
+<meta property="article:modified_time" content="2020-05-29T13:54:25.884Z">
 <meta property="article:author" content="dabei-Z">
 <meta property="article:tag" content="lattice">
-<meta property="article:tag" content="short integer solution">
+<meta property="article:tag" content="learning with errors">
+<meta property="article:tag" content="PKE">
+<meta property="article:tag" content="dual">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/04/28/SIS/sis.svg">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/29/LWE-based-PKE/regev05.svg">
 
-<link rel="canonical" href="http://yoursite.com/2020/04/28/SIS/">
+<link rel="canonical" href="http://yoursite.com/2020/05/29/LWE-based-PKE/">
 
 
 <script id="page-configurations">
@@ -48,7 +51,7 @@
   };
 </script>
 
-  <title>SIS 问题 | DABEI-Z NOTES</title>
+  <title>基于LWE的公钥加密机制构造 | DABEI-Z NOTES</title>
   
 
 
@@ -167,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/28/SIS/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/29/LWE-based-PKE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -180,7 +183,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          SIS 问题
+          基于LWE的公钥加密机制构造
         </h1>
 
         <div class="post-meta">
@@ -189,16 +192,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-04-28 16:48:26" itemprop="dateCreated datePublished" datetime="2020-04-28T16:48:26+08:00">2020-04-28</time>
+              <time title="创建时间：2020-05-29 21:32:45 / 修改时间：21:54:25" itemprop="dateCreated datePublished" datetime="2020-05-29T21:32:45+08:00">2020-05-29</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-29 21:39:21" itemprop="dateModified" datetime="2020-05-29T21:39:21+08:00">2020-05-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -220,33 +217,90 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>和基于数论的公钥密码学依靠诸如 <a href="https://dabeiz.github.io/2020/04/22/rsa/" target="_blank" rel="noopener">RSA</a>、<a href="https://dabeiz.github.io/2020/04/22/dl/" target="_blank" rel="noopener">DDH 和 CDH</a> 等困难问题假设类似，基于格的密码学同样有着这样的困难问题假设，分别为 SIS（Short Integer Solution）问题和 LWE（Learning With Errors）问题。这里我们先来详细介绍 SIS 问题。</p>
+        <p>格密码学中有两种主要的基于 LWE 假设的公钥加密构造方法，分别为 [Reg05] 中提出的原始版本和 [GPV08] 中提出的对偶（Dual）版本。</p>
 <a id="more"></a>
-<h1 id="SIS-问题的定义"><a href="#SIS-问题的定义" class="headerlink" title="SIS 问题的定义"></a>SIS 问题的定义</h1><p>SIS 问题最初由 Ajtai [Ajt96] 提出，它的定义如下：</p>
-<hr>
-<p><strong>Short Integer solution $(\mbox{SIS}_{n, q, \beta, m})$</strong></p>
-<p>Given $m$ uniformaly random vectors $\mathbf{a_i} \in \mathbb{Z}_q^n$, forming the columns of a matrix $\mathbf{A} \in \mathbb{Z}_q^{n \times m}$, find a nonzero integer vector $\mathbf{z} \in \mathbb{Z}^m$ of norm $||\mathbf{z}|| \le \beta$ such that</p>
-<script type="math/tex; mode=display">
-f_{\mathbf{A}}(\mathbf{z}) := \mathbf{Az} = \sum_i \mathbf{a}_i \cdot z_i = \mathbf{0} \in \mathbb{Z}_q^n</script><blockquote>
-<p>— by [Pei16] in p.18</p>
-</blockquote>
-<hr>
-<h1 id="SIS-问题的讨论"><a href="#SIS-问题的讨论" class="headerlink" title="SIS 问题的讨论"></a>SIS 问题的讨论</h1><p>在看完定义后我们会发现，SIS 问题在形式上类似于一个线性方程求解问题，即“Integer Solution”，但真正让 SIS问题有密码学价值的是对解的约束条件，即“short”，也就是求出的线性方程的解的模必须要足够小（也就是定义当中说的 $||\mathbf{z}|| \le \beta$）。否则的话，如果不对解加以约束，则只需要通过高斯消元法（<a href="https://mathworld.wolfram.com/GaussianElimination.html" target="_blank" rel="noopener">Gaussian Elimination</a>）就可以完全解决这个问题。明确了这一点后，很自然地下一个问题就是限制条件 $\beta$ 到底应该怎么选？</p>
-<h2 id="关于参数-β-的选择"><a href="#关于参数-β-的选择" class="headerlink" title="关于参数 β 的选择"></a>关于参数 β 的选择</h2><p>首先很显然，$\beta$ 不能太大，比如说若 $\beta \ge q$，那么很显然就存在一个平凡解为 $\mathbf{z} = (q, 0, \cdots, 0) \in \mathbb{Z}^m$，这个问题同样就没有意义了；其次，$\beta$ 也不能太小，因为太小很有可能就导致整个问题根本没有符合条件的解。一个保证有解的参数选择为：$m \ge n \cdot \log q$ 而 $\beta \ge \sqrt{m}$ （事实上都是略大于而不是远远大于）它的推导过程如下：</p>
-<p>考虑映射 $f_{\mathbf{A}}: \{0, 1\}^m \to \mathbb{Z}_q^n$，不难发现这个映射的定义域（domain）大小为 $2^m$，值域（range）大小为 $q^n$。若按照上述参数选择，则可以得到 $2^m \ge q^n$。按照鸽巢原理（<a href="https://mathworld.wolfram.com/PigeonholePrinciple.html" target="_blank" rel="noopener">Pigeonhole Principle</a>），映射 $f_{\mathbf{A}}$ 就必然存在碰撞（collision），即存在 $\mathbf{x, x’} \in \{0, 1\}^m$ 满足 $\mathbf{Ax = Ax’}$。两式相减有 $\mathbf{A(x-x’) = 0}$，于是就可以构造出一个 SIS 解 $\mathbf{z = x-x’} \in \{0, \pm 1\}^m$，它满足约束 $||\mathbf{z}|| \le \beta$。这就证明了 SIS 解的存在性。</p>
-<h2 id="SIS-问题的-lattice-表示"><a href="#SIS-问题的-lattice-表示" class="headerlink" title="SIS 问题的 lattice 表示"></a>SIS 问题的 lattice 表示</h2><p>说到这里我们都还是在 $\mathbb{Z}^m$ 域中讨论一个线性方程求解的问题，而要使用这个 SIS 问题去构造基于格的密码学，我们还需要一个小小的跳跃，就是将线性方程和某个格（lattice）对应起来。这其实很好办到，因为不论是线性方程的解还是格点（lattice point）都是 $\mathbb{Z}^m$ 域中的一个元素（即一个 $m$ 维向量），因此我们可以定义如下形式的格表示与之对应的 SIS 问题：</p>
-<script type="math/tex; mode=display">
-\mathcal{L}^{\perp}(\mathbf{A}) = \{ \mathbf{z} \in \mathbb{Z}^m : \mathbf{Az=0} \in \mathbb{Z}_q^n \} \supseteq q \mathbb{Z}^m</script><p>为了方便理解，下面给出 2 维的示意图来阐述 SIS 问题与 lattice 的对应关系，从图中可以看出，SIS 问题就是找距离原点某一小范围内的格点。需要注意的是，$\mathcal{L}^{\perp}(\mathbf{A})$ 其实是在空间中无限延伸的，下图只是画了它的延伸单元，即 $q \times q$ 范围内的一小部分。</p>
-<p><img src="/2020/04/28/SIS/sis.svg" alt="sis"></p>
-<h2 id="SIS-问题的变种"><a href="#SIS-问题的变种" class="headerlink" title="SIS 问题的变种"></a>SIS 问题的变种</h2><p>定义中给出的其实是齐次（homogeneous）版本的 SIS 问题，即等式右边是 $\mathbf{0}$。而如果将等式右边改为一个 $n$ 维常向量 $\mathbf{u}$，这个变种问题就称为非齐次（inhomogeneous）版本的 SIS 问题。不难发现非齐次的 SIS 问题对应的 lattice 表示为：</p>
-<script type="math/tex; mode=display">
-\mathcal{L}^{\perp}_{\mathbf{u}} (\mathbf{A}) = \{ \mathbf{z} \in \mathbb{Z}^m : \mathbf{Az=u} \in \mathbb{Z}_q^n \} = \mathbf{c} + \mathcal{L}^{\perp} (\mathbf{A})</script><p>其中 $\mathbf{c}$ 为任何一个（不一定要是“short”）非齐次 SIS 的解，即 $\mathbf{Ac=u}$。因此 $\mathcal{L}^{\perp}_{\mathbf{u}} (\mathbf{A})$ 其实可以认为是 $\mathcal{L}^{\perp} (\mathbf{A})$ 的一个偏移（offset）。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><p>[Ajt96]: M. Ajtai. Generating hard instances of lattice problems. <em>Electronic Colloquium on Computational Complexity</em>. 1996.</p>
-<p>url: <a href="https://eccc.weizmann.ac.il//eccc-reports/1996/TR96-007/index.html" target="_blank" rel="noopener">https://eccc.weizmann.ac.il//eccc-reports/1996/TR96-007/index.html</a></p>
+<h1 id="Reg05-Primal-version"><a href="#Reg05-Primal-version" class="headerlink" title="[Reg05] Primal-version"></a>[Reg05] Primal-version</h1><ul>
+<li><p>构造（Construction）：</p>
+<p><img src="/2020/05/29/LWE-based-PKE/regev05.svg" alt="regev05"></p>
 </li>
-<li><p>[Pei16]: C. Peikert. <em>A Decade of Lattice Cryptography</em>. 2016. </p>
+<li><p>正确性（Correctness）：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+u' - \mathbf{s}^t \mathbf{u} 
+&= (\mathbf{b}^t \mathbf{x} + bit \cdot \frac{q}{2}) - \mathbf{s}^t (\mathbf{Ax}) \\
+&= (\mathbf{s}^t \mathbf{A} + \mathbf{e}^t) \mathbf{x} + bit \cdot \frac{q}{2} - \mathbf{s}^t \mathbf{Ax} \\
+&= \mathbf{e}^t \mathbf{x} + bit \cdot \frac{q}{2} \\
+& \approx bit \cdot \frac{q}{2} 
+\end{align*}</script></li>
+<li><p>安全性（Security）：这里简单地给出证明要点。在上述加密过程中，攻击者看到的是：</p>
+<script type="math/tex; mode=display">
+\mbox{Tuple1} = (\mathbf{A}, \mathbf{b}^t, \mathbf{u}, u')</script><p>而 $\mathbf{b}^t = \mathbf{s}^t \mathbf{A} + \mathbf{e}^t$，因此根据 <code>LWE</code> 假设，这个四元组与下面的四元组不可区分，其中 $\widetilde{}$ 表示均匀随机的变量：</p>
+<script type="math/tex; mode=display">
+\mbox{Tuple2} = (\mathbf{A}, \widetilde{\mathbf{b}^t}, \mathbf{u}, u')</script><p>又由于 $\mathbf{u} = \mathbf{Ax}$，因此根据 <code>SIS</code> 假设可知 $\mbox{Tuple2}$ 与下面的 $\mbox{Tuple3}$ 也是不可区分的：</p>
+<script type="math/tex; mode=display">
+\mbox{Tuple3} = (\mathbf{A}, \widetilde{\mathbf{b}^t}, \widetilde{\mathbf{u}}, u')</script><p>此时注意到 $u’ = \mathbf{b}^t \mathbf{x} + bit \cdot \frac{q}{2}$，当 $\mathbf{b}^t$ 已经均匀随机化成了 $\widetilde{\mathbf{b}^t}$，且加密比特信息未知，$u’$ 就相当于是一个 <code>one-time pad</code>，$\mbox{Tuple3}$ 与下面的 $\mbox{Tuple4}$ 是不可区分的 ：</p>
+<script type="math/tex; mode=display">
+\mbox{Tuple3} = (\mathbf{A}, \widetilde{\mathbf{b}^t}, \widetilde{\mathbf{u}}, \widetilde{u'})</script><p>而 $\mbox{Tuple4}$ 是完全随机的，攻击者无法从中得到任何与加密比特消息有关的信息，因此这个构造是安全的。</p>
+</li>
+</ul>
+<h1 id="GPV08-Dual-version"><a href="#GPV08-Dual-version" class="headerlink" title="[GPV08] Dual-version"></a>[GPV08] Dual-version</h1><ul>
+<li><p>构造（Construction）</p>
+<p><img src="/2020/05/29/LWE-based-PKE/gpv08.svg" alt="gpv08"></p>
+</li>
+<li><p>正确性（Correctness）：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+b' - \mathbf{b}^t \mathbf{x} 
+&= (\mathbf{s}^t (\mathbf{Ax}) + e' +  bit \cdot \frac{q}{2})- (\mathbf{s}^t \mathbf{A} + \mathbf{e}^t) \mathbf{x} \\
+&= (e' - \mathbf{e}^t \mathbf{x}) + bit \cdot \frac{q}{2} \\
+& \approx bit \cdot \frac{q}{2} 
+\end{align*}</script></li>
+<li><p>安全性（Security）：同样简单地给出证明要点。在上述加密过程中，攻击者看到的是：</p>
+<script type="math/tex; mode=display">
+\mbox{Tuple1} = (\mathbf{A}, \mathbf{u}, \mathbf{b}^t, b')</script><p>而 $\mathbf{b}^t = \mathbf{s}^t \mathbf{A} + \mathbf{e}^t$，因此根据 <code>LWE</code> 假设，$\mbox{Tuple1}$ 与下面的 $\mbox{Tuple2}$ 不可区分：</p>
+<script type="math/tex; mode=display">
+\mbox{Tuple2} = (\mathbf{A}, \mathbf{u}, \widetilde{\mathbf{b}^t}, b')</script><p>又由于 $\mathbf{u} = \mathbf{Ax}$，因此根据 <code>SIS</code> 假设可知 $\mbox{Tuple2}$ 与下面的 $\mbox{Tuple3}$ 也是不可区分的：</p>
+<script type="math/tex; mode=display">
+\mbox{Tuple3} = (\mathbf{A}, \widetilde{\mathbf{u}}, \widetilde{\mathbf{b}^t}, b')</script><p>此时注意到 $b’$ 同样是 <code>one-time pad</code>，因此 $\mbox{Tuple3}$ 与 $\mbox{Tuple4}$ 不可区分：</p>
+<script type="math/tex; mode=display">
+\mbox{Tuple3} = (\mathbf{A}, \widetilde{\mathbf{u}}, \widetilde{\mathbf{b}^t}, \widetilde{u'})</script><p>而 $\mbox{Tuple4}$ 是完全随机的，因此这个构造是安全的。</p>
+</li>
+</ul>
+<h1 id="两种构造的对比"><a href="#两种构造的对比" class="headerlink" title="两种构造的对比"></a>两种构造的对比</h1><p>从上面的两种构造来看，不难发现它们之间存在着对偶关系（对偶没有具体定义，它广泛地指那些具有相似性和对称性但又无法完全对称的关系）。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">pk</th>
+<th style="text-align:center">ciphertext</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">[Reg05]</td>
+<td style="text-align:center">$\mathbf{b}^t$（长为：$n \cdot \log q$）</td>
+<td style="text-align:center">$(\mathbf{u}, u’)$ （长为：$(n+1)$）</td>
+</tr>
+<tr>
+<td style="text-align:center">[GPV08]</td>
+<td style="text-align:center">$\mathbf{u}$ （长为：$n$）</td>
+<td style="text-align:center">$(\mathbf{b}^t, b’)$（长为：$(n \cdot \log q + 1)$）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>【注】：$m \approx \log q$。</p>
+<p>同时，对于 [Reg05] 来说，当攻击者拿到（或者说给定）一个 $\mbox{Tuple} = (\mathbf{A}, \mathbf{b}^t, \mathbf{u}, u’)$ 时，根据这个 $Tuple$ 其实是可以唯一确定私钥 $\mathbf{s}$ 的（当然根据安全性，攻击者求不出这个值），但是用来生成密文的随机值 $\mathbf{x}$ 是无法确定的。而与之对应的是，在 [GPV08] 中，当给定一个 $\mbox{Tuple} = (\mathbf{A}, \mathbf{u}, \mathbf{b}^t, b’)$ 时，根据这个 $Tuple$ 可以唯一确定那个用来生成密文的随机值 $\mathbf{s}$，但是满足这个 $Tuple$ 关系的私钥 $\mathbf{x}$ 却可以有很多可能的取值。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><p>[Pei16]: C. Peikert. <em>A Decade of Lattice Cryptography</em>. 2016.</p>
 <p>pdf: <a href="https://web.eecs.umich.edu/~cpeikert/pubs/lattice-survey.pdf" target="_blank" rel="noopener">https://web.eecs.umich.edu/~cpeikert/pubs/lattice-survey.pdf</a></p>
+</li>
+<li><p>[Reg05]: O. Regev. On lattices, learning with errors, random linear codes, and cryptography. In STOC, pages 84-93. 2005.</p>
+<p>doi: <a href="https://dl.acm.org/doi/10.1145/1060590.1060603" target="_blank" rel="noopener">https://dl.acm.org/doi/10.1145/1060590.1060603</a></p>
+</li>
+<li><p>[GPV08]: C. Gentry, C. Peikert, and V. Vaikuntanathan. Trapdoors for hard lattices and new cryptographic constructions. In STOC, pages 197–206. 2008.</p>
+<p>doi: <a href="https://dl.acm.org/doi/10.1145/1374376.1374407" target="_blank" rel="noopener">https://dl.acm.org/doi/10.1145/1374376.1374407</a></p>
 </li>
 </ul>
 
@@ -259,7 +313,9 @@ f_{\mathbf{A}}(\mathbf{z}) := \mathbf{Az} = \sum_i \mathbf{a}_i \cdot z_i = \mat
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/lattice/" rel="tag"># lattice</a>
-              <a href="/tags/short-integer-solution/" rel="tag"># short integer solution</a>
+              <a href="/tags/learning-with-errors/" rel="tag"># learning with errors</a>
+              <a href="/tags/PKE/" rel="tag"># PKE</a>
+              <a href="/tags/dual/" rel="tag"># dual</a>
           </div>
 
         
@@ -268,13 +324,10 @@ f_{\mathbf{A}}(\mathbf{z}) := \mathbf{Az} = \sum_i \mathbf{a}_i \cdot z_i = \mat
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/04/22/dl/" rel="prev" title="Discrete Logarithm">
-      <i class="fa fa-chevron-left"></i> Discrete Logarithm
+    <a href="/2020/05/05/LWE/" rel="prev" title="LWE 问题">
+      <i class="fa fa-chevron-left"></i> LWE 问题
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/05/05/LWE/" rel="next" title="LWE 问题">
-      LWE 问题 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -334,7 +387,7 @@ f_{\mathbf{A}}(\mathbf{z}) := \mathbf{Az} = \sum_i \mathbf{a}_i \cdot z_i = \mat
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SIS-问题的定义"><span class="nav-number">1.</span> <span class="nav-text">SIS 问题的定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SIS-问题的讨论"><span class="nav-number">2.</span> <span class="nav-text">SIS 问题的讨论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于参数-β-的选择"><span class="nav-number">2.1.</span> <span class="nav-text">关于参数 β 的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SIS-问题的-lattice-表示"><span class="nav-number">2.2.</span> <span class="nav-text">SIS 问题的 lattice 表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SIS-问题的变种"><span class="nav-number">2.3.</span> <span class="nav-text">SIS 问题的变种</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Reg05-Primal-version"><span class="nav-number">1.</span> <span class="nav-text">[Reg05] Primal-version</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GPV08-Dual-version"><span class="nav-number">2.</span> <span class="nav-text">[GPV08] Dual-version</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#两种构造的对比"><span class="nav-number">3.</span> <span class="nav-text">两种构造的对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -515,7 +568,7 @@ f_{\mathbf{A}}(\mathbf{z}) := \mathbf{Az} = \sum_i \mathbf{a}_i \cdot z_i = \mat
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/2020/04/28/SIS/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/2020/05/29/LWE-based-PKE/',]
       });
       });
   </script>
