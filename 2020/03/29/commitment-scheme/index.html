@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"dabeiz.github.io","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="承诺机制 Commitment scheme，顾名思义就是一个人一旦做出了承诺，那么这个人就不能随意改变这个承诺。这个想法最初由 Blum 在 [Blum81] 中提出，这篇论文的标题也很有意思叫做：通过电话抛硬币（Coin Flipping by Telephone）。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="承诺机制">
-<meta property="og:url" content="http://yoursite.com/2020/03/29/commitment-scheme/index.html">
+<meta property="og:url" content="https://dabeiz.github.io/2020/03/29/commitment-scheme/index.html">
 <meta property="og:site_name" content="DABEI-Z NOTES">
 <meta property="og:description" content="承诺机制 Commitment scheme，顾名思义就是一个人一旦做出了承诺，那么这个人就不能随意改变这个承诺。这个想法最初由 Blum 在 [Blum81] 中提出，这篇论文的标题也很有意思叫做：通过电话抛硬币（Coin Flipping by Telephone）。">
 <meta property="og:locale" content="zh_CN">
@@ -35,7 +35,7 @@
 <meta property="article:tag" content="pedersen commitment">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/03/29/commitment-scheme/">
+<link rel="canonical" href="https://dabeiz.github.io/2020/03/29/commitment-scheme/">
 
 
 <script id="page-configurations">
@@ -166,7 +166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/29/commitment-scheme/">
+    <link itemprop="mainEntityOfPage" href="https://dabeiz.github.io/2020/03/29/commitment-scheme/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -298,7 +298,7 @@ g = h^{\frac{r-r'}{m'-m}} \mod q</script><p>这说明 Sender 可以计算出 $g$
 <li><p>Unconditional hiding：分析承诺 $C = g^m h^r \mod q$ 会发现，因为 $r$ 的随机性，得到的 $C$ 也完全是 $(G, \cdot)$ 中的一个随机元素，因此从承诺 $C$ 中得不出任何关于 $m$ 的信息。</p>
 </li>
 </ul>
-<h1 id="承诺机制在-ZKP-中的应用"><a href="#承诺机制在-ZKP-中的应用" class="headerlink" title="承诺机制在 ZKP 中的应用"></a>承诺机制在 ZKP 中的应用</h1><p>在 <a href="https://dabeiz.github.io/2020/03/22/zero-knowledge-proof/" target="_blank" rel="noopener">GI 的零知识证明</a> 中，证明者 P 首先发送给验证者 V 的消息 $H=\pi (G_0)$，可以看作是 P 对于“$H$ 是 $G_0$ 的同构”的一个承诺。而这个承诺在 V 选择 $b=0$ 时被打开，在 V 选择 $b=1$ 时则不会被打开。</p>
+<h1 id="承诺机制在-ZKP-中的应用"><a href="#承诺机制在-ZKP-中的应用" class="headerlink" title="承诺机制在 ZKP 中的应用"></a>承诺机制在 ZKP 中的应用</h1><p>在 <a href="https://dabeiz.github.io/2020/03/22/zero-knowledge-proof/">GI 的零知识证明</a> 中，证明者 P 首先发送给验证者 V 的消息 $H=\pi (G_0)$，可以看作是 P 对于“$H$ 是 $G_0$ 的同构”的一个承诺。而这个承诺在 V 选择 $b=0$ 时被打开，在 V 选择 $b=1$ 时则不会被打开。</p>
 <p>我们可以设想一下，如果没有这个承诺被打开的过程，即 P 只给 V 发送 $H$ 和 $\phi$，然后 V 验证 $H = \phi(G_1)$ 是否成立。这就会产生一个很大的安全漏洞：</p>
 <p>假设一个恶意的 P* 知道 V 验证的仅仅只是 $H = \phi(G_1)$，那么它就没有必要给 V 发送真正的$H = \pi(G_0)$ 和 $\phi = \pi \circ \omega$，它完全可以给 V 发送 $H’ = \pi(G_1)$ 且 $\phi’ = \pi$，这样 V 的验证也一定会通过。也就是说，一个没有秘密输入（secret value $\omega$）的恶意攻击者 P*，甚至在 $G_0$ 与 $G_1$ 并不真正同构的情况下，都可以通过 V 的验证！这显然是不安全的协议！</p>
 <p>然而，加上承诺机制后，这个协议就变得安全了。分析后会发现，这是因为 V 的随机选取值 $b$，使得 P 需要有一半的概率去打开这个承诺。也就是说 P 想要通过验证，他就必须要有具备打开承诺的能力，这就迫使 P 发送真实的 $G_0$ 的同构给 V 完成验证。</p>
@@ -392,6 +392,7 @@ g = h^{\frac{r-r'}{m'-m}} \mod q</script><p>这说明 Sender 可以计算出 $g$
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何通过电话抛硬币"><span class="nav-text">如何通过电话抛硬币</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#承诺机制的定义"><span class="nav-text">承诺机制的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Type1：Unconditional-binding-Computational-hiding"><span class="nav-text">Type1：Unconditional binding + Computational hiding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Type2：Computational-binding-Unconditional-hiding"><span class="nav-text">Type2：Computational binding + Unconditional hiding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么不能有-Unconditional-binding-Unconditional-hiding-呢？"><span class="nav-text">为什么不能有 Unconditional binding + Unconditional hiding 呢？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Pedersen-承诺机制"><span class="nav-text">Pedersen 承诺机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#承诺机制在-ZKP-中的应用"><span class="nav-text">承诺机制在 ZKP 中的应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -572,7 +573,7 @@ g = h^{\frac{r-r'}{m'-m}} \mod q</script><p>这说明 Sender 可以计算出 $g$
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/2020/03/29/commitment-scheme/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://dabeiz.github.io/2020/03/29/commitment-scheme/',]
       });
       });
   </script>
