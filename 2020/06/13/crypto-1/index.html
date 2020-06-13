@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://dabeiz.github.io/2020/06/13/crypto-1/substitute.JPG">
 <meta property="og:image" content="https://dabeiz.github.io/2020/06/13/crypto-1/letter.JPG">
 <meta property="article:published_time" content="2020-06-13T13:50:21.000Z">
-<meta property="article:modified_time" content="2020-06-13T14:15:15.811Z">
+<meta property="article:modified_time" content="2020-06-13T15:15:23.577Z">
 <meta property="article:author" content="dabei-Z">
 <meta property="article:tag" content="古典密码学">
 <meta property="article:tag" content="凯撒密码">
@@ -199,7 +199,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-06-13 21:50:21 / 修改时间：22:15:15" itemprop="dateCreated datePublished" datetime="2020-06-13T21:50:21+08:00">2020-06-13</time>
+              <time title="创建时间：2020-06-13 21:50:21 / 修改时间：23:15:23" itemprop="dateCreated datePublished" datetime="2020-06-13T21:50:21+08:00">2020-06-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,9 +234,9 @@
 <center style="color:#C0C0C0;text-decoration:underline">https://projects.raspberrypi.org/zh-CN/projects/secret-messages/1</center>
 
 <p>但是这个密码有一个问题，就是如果某个人知道这个密码是这样设计的，那么他就可以轻而易举地破译任何他截获的密文，方法很简单，就是把密文中的每个字母都进行一次3位的循环左移。看到这里你可能会问，那我把这个设计方式也保密不就行了？这样别人拿到密文也不知道我是怎么加密的，他看到的只是一堆无序的字母。在很长的一段时间里，人们确实也是这么做的，就是只把加密解密方式告诉通信双方而对其他人严格保密。可是事实证明，这样的方式是脆弱的。很多密码因为偶然泄露了加密方式之后就变得不堪一击，继而许多用这种加密方式加密的密文都被破译了。最终，一个叫 Kerckhoff 的人在19世纪石破天惊地提出：“密码设计不能再这样下去了！为了安全我们要最大限度地公开！”</p>
-<h1 id="Kerckhoff原理"><a href="#Kerckhoff原理" class="headerlink" title="Kerckhoff原理"></a>Kerckhoff原理</h1><p>“为了安全而最大限度地公开”？这意味着一个密码构造的所有细节都应该被全部公开，包括公开给那些想要攻击这个构造的人，也就是说，一个安全的密码构造在使用时只有通信双方的密钥是保密的。</p>
+<h1 id="Kerckhoff-原理"><a href="#Kerckhoff-原理" class="headerlink" title="Kerckhoff 原理"></a>Kerckhoff 原理</h1><p>“为了安全而最大限度地公开”？这意味着一个密码构造的所有细节都应该被全部公开，包括公开给那些想要攻击这个构造的人，也就是说，一个安全的密码构造在使用时只有通信双方的密钥是保密的。</p>
 <p>这仿佛一个悖论。可是这个观点如今是公认的密码设计的准则，甚至被认为是从古典密码学到现代密码学的转变的标志之一（另一个标志就是引入系统化分析方法），<strong>让密码学从艺术变为科学</strong>。看似荒诞的假说背后，其实仔细想想就能找到答案。</p>
-<p>我们要明确一点，密码学虽然是个比较理论的学科，但是它的最终目的还是用于实践的。因此在密码设计时，就不得不考虑现实的情况。而Kerckhoff原理在实际中的合理性主要基于以下两点：</p>
+<p>我们要明确一点，密码学虽然是个比较理论的学科，但是它的最终目的还是用于实践的。因此在密码设计时，就不得不考虑现实的情况。而 Kerckhoff 原理在实际中的合理性主要基于以下两点：</p>
 <p>第一， 显而易见的，对一个密钥（通常较短）保密远比对复杂的整个机制保密容易得多。因为对于许多用户来说，共用同一个加密机制而分配不同的密钥更合理，否则就得每建立一个通信连接就换一种新的机制，这无疑是复杂且不现实的。</p>
 <p>第二，即使保密的信息被暴露，那么更换密钥远比更换使用的加密机制要方便，尤其对于那些大型的使用场景来说。</p>
 <p>下面带着 Kerckhoff 原理，我们来正式地表述一个加密设计。</p>
@@ -247,13 +247,17 @@
 <h1 id="重审经典古典密码"><a href="#重审经典古典密码" class="headerlink" title="重审经典古典密码"></a>重审经典古典密码</h1><p>有了上述关于术语和 Kerckhoff 原理的介绍，我们可以数学化地表示凯撒密码了。</p>
 <p>我们给英文字母 a~z 编码，分别为 0~25，这样对于明文中每一个字母，它的加解密如下：</p>
 <script type="math/tex; mode=display">
-c := Enc(m) = m + 3 \mod 26 \\
-m := Dec(c) = c - 3 \mod 26</script><p>注意，$Enc$ 和 $Dec$ 的参数中之所以没有密钥 $k$，是因为凯撒密码已经规定了密钥就是 3，根据 Kerckhoff 原理，这是一个公开值。</p>
+\begin{align*}
+c := Enc(m) = m + 3 & \mod 26 \\
+m := Dec(c) = c - 3 & \mod 26
+\end{align*}</script><p>注意，$Enc$ 和 $Dec$ 的参数中之所以没有密钥 $k$，是因为凯撒密码已经规定了密钥就是 3，根据 Kerckhoff 原理，这是一个公开值。</p>
 <p>所以，看到这里我们就能发现，在现代密码学的设定下，凯撒密码简直就是裸奔呐！没有任何隐秘性和安全性可言。</p>
 <p>或许，我们可以改进一下？把密钥加上，不再规定 $k$ 是 3 了，而是 0~25 之间的任何一个数。这样密钥空间就从原来的 $\{3\}$ 变为了 $\{0, 1, \cdots, 25\}$。这就是<strong>移位密码（shift cipher）</strong>，它的加解密如下：</p>
 <script type="math/tex; mode=display">
-c := Enc_k(m) = m + k \mod 26 \\
-m := Dec_k(c) = c - k \mod 26</script><p>虽然它看上去比凯撒密码安全一些，不过很不幸它在穷举攻击前不堪一击。攻击者只需要穷举 $k \in \{0, 1, \cdots, 25\}$ 分别对 $c$ 试图解密，直到解密出的 $m$ 是一段可以阅读的文字。</p>
+\begin{align*}
+c := Enc_k(m) = m + k & \mod 26 \\
+m := Dec_k(c) = c - k & \mod 26
+\end{align*}</script><p>虽然它看上去比凯撒密码安全一些，不过很不幸它在穷举攻击前不堪一击。攻击者只需要穷举 $k \in \{0, 1, \cdots, 25\}$ 分别对 $c$ 试图解密，直到解密出的 $m$ 是一段可以阅读的文字。</p>
 <p>或许，再改进一下？我们这次不再简单地让 a~z 移位相同的距离了，而是对每个不同的字母都取定一个对应的字母。同时为了解密的正确性，不同的字母对应不同的加密字母。因此密钥就是一张置换表，比如：把 a 对应 x，b 对应 e，c 对应 u 等等。这就是<strong>置换密码（substitution cipher）</strong>。</p>
 <p><img src="/2020/06/13/crypto-1/substitute.JPG" alt="substitute"></p>
 <p>这一次我们有了很大进步，我们一举把密钥空间大小 $|\mathcal{K}|$ 从移位密码里的 26，提高到现在的 26！（这里感叹号是表示阶乘，$26! \approx 2^{88}$）。安全感满满的。但是依旧很不幸的是，这个密码也是不安全的！原因在于它是确定型（deterministic）加密的，也就是说消息 $m$ 中任何相同的字母，虽然攻击者不知道它们对应的加密字母是什么，但攻击者可以确定这些加密字母都是同一个字母，比如说明文“hello”在这里会被加密成“kdoof”，攻击者拿到这个密文后，就可以猜测它是一个五个字母的单词而且倒数二、三位置是两个相同的字母，符合这个条件的英文单词并不多，因此攻击者可以很快地就破译出这个密文对应的明文是“hello”。</p>
@@ -353,7 +357,7 @@ m := Dec_k(c) = c - k \mod 26</script><p>虽然它看上去比凯撒密码安全
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#古典密码学"><span class="nav-text">古典密码学</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kerckhoff原理"><span class="nav-text">Kerckhoff原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#认识一些术语"><span class="nav-text">认识一些术语</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重审经典古典密码"><span class="nav-text">重审经典古典密码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#现代密码学的系统化分析"><span class="nav-text">现代密码学的系统化分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#古典密码学"><span class="nav-text">古典密码学</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kerckhoff-原理"><span class="nav-text">Kerckhoff 原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#认识一些术语"><span class="nav-text">认识一些术语</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重审经典古典密码"><span class="nav-text">重审经典古典密码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#现代密码学的系统化分析"><span class="nav-text">现代密码学的系统化分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
