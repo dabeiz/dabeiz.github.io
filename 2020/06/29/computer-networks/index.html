@@ -20,17 +20,22 @@
     var CONFIG = {"hostname":"dabeiz.github.io","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="一个试图使用费曼技巧学习的人">
-<meta property="og:type" content="website">
-<meta property="og:title" content="DABEI-Z NOTES">
-<meta property="og:url" content="https://dabeiz.github.io/tags/kerckhoff%E5%8E%9F%E5%88%99/index.html">
+  <meta name="description" content="计算机网络。顾名思义就是多台计算机相连接而形成的网络。但是这个解释非常粗略。因为“多台”可以指3台。可以指30台。也可以指300台。还可以指300000台。量变引起质变。少量的计算机我们还可以想着可以“直连”。但数量庞大的计算机如何相连就需要好好地研究了。这也是本课程的主题。即如何设计并组织这些计算机网络。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络课程总结-引言">
+<meta property="og:url" content="https://dabeiz.github.io/2020/06/29/computer-networks/index.html">
 <meta property="og:site_name" content="DABEI-Z NOTES">
-<meta property="og:description" content="一个试图使用费曼技巧学习的人">
+<meta property="og:description" content="计算机网络。顾名思义就是多台计算机相连接而形成的网络。但是这个解释非常粗略。因为“多台”可以指3台。可以指30台。也可以指300台。还可以指300000台。量变引起质变。少量的计算机我们还可以想着可以“直连”。但数量庞大的计算机如何相连就需要好好地研究了。这也是本课程的主题。即如何设计并组织这些计算机网络。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dabeiz.github.io/2020/06/29/computer-networks/osi7.gif">
+<meta property="article:published_time" content="2020-06-29T01:45:16.000Z">
+<meta property="article:modified_time" content="2020-06-29T02:08:03.819Z">
 <meta property="article:author" content="dabei-Z">
+<meta property="article:tag" content="computer networks">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dabeiz.github.io/2020/06/29/computer-networks/osi7.gif">
 
-<link rel="canonical" href="https://dabeiz.github.io/tags/kerckhoff%E5%8E%9F%E5%88%99/">
+<link rel="canonical" href="https://dabeiz.github.io/2020/06/29/computer-networks/">
 
 
 <script id="page-configurations">
@@ -38,11 +43,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false
+    isPost : true
   };
 </script>
 
-  <title>标签: kerckhoff原则 | DABEI-Z NOTES</title>
+  <title>计算机网络课程总结-引言 | DABEI-Z NOTES</title>
   
 
 
@@ -156,50 +161,120 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">kerckhoff原则
-          <small>标签</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dabeiz.github.io/2020/06/29/computer-networks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="dabei-Z">
+      <meta itemprop="description" content="一个试图使用费曼技巧学习的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DABEI-Z NOTES">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络课程总结-引言
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-29 09:45:16 / 修改时间：10:08:03" itemprop="dateCreated datePublished" datetime="2020-06-29T09:45:16+08:00">2020-06-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
+        <p>计算机网络。顾名思义就是多台计算机相连接而形成的网络。但是这个解释非常粗略。因为“多台”可以指3台。可以指30台。也可以指300台。还可以指300000台。量变引起质变。少量的计算机我们还可以想着可以“直连”。但数量庞大的计算机如何相连就需要好好地研究了。这也是本课程的主题。即如何设计并组织这些计算机网络。</p>
+<a id="more"></a>
+<p>首先讲<strong>为什么需要计算机网络</strong>。计算机本质上是用来进行计算的。而计算机网络中互相连接的计算机就可以实现资源共享共同完成计算的任务。不论是个人用户还是公司用户，都需要计算机网络去满足他们丰富的计算需求。</p>
+<p>其次我们再来讲计算机<strong>网络的不同量级</strong>，从小到大可分为: </p>
+<ul>
+<li><p>个域网 (比如蓝牙，NFC，RFID)</p>
+</li>
+<li><p>局域网LAN (比如WiFi和以太网)</p>
+</li>
+<li><p>城域网 (比如有线电视网络)</p>
+</li>
+<li><p>广域网WAN (一般由网络服务提供商负责运营，VPN也是一种广域网)</p>
+</li>
+<li><p>互联网络 (使用路由器连接多个网络)</p>
+</li>
+</ul>
+<p>上述计算机网络的分层分类。其实还只是硬件层面的，计算机网络到底是如何连接的还是没有明确。这需要从计算机网络的软件层面来谈，也就是常说的“<strong>七层协议</strong>”。这个概念非常重要。因为它把网络抽象化成了一层一层的网络协议。每一层对上一层来说都是黑盒状态(也有说法是“透明的”，但我觉得它有歧义)。于是整个网络的设计问题就变成了对于每一层的设计。设计需要考虑的要素包括但不限于: 可靠性、资源分配、规模增长等等。下面这张图我收藏好久了：</p>
+<p><img src="/2020/06/29/computer-networks/osi7.gif" alt="osi7"></p>
+<p>最后，这一章讲了著名的网络，比如：</p>
+<ul>
+<li><p>因特网(这几乎是提起网络就必提及的东西)</p>
+</li>
+<li><p>802。11无线LAN(也就是常说的WiFi)</p>
+</li>
+<li><p>移动电话网络(移动电话网络体系结构与因特网截然不同，“蜂窝网络”、“基站”、“频分/时分/码分复用”等词都是移动电话网络里的词儿)</p>
+</li>
+</ul>
+<p>还有一些新兴网络如物联网。</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-06-13T21:50:21+08:00"
-              content="2020-06-13">
-          06-13
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/computer-networks/" rel="tag"># computer networks</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/06/13/crypto-1/" itemprop="url">
-            <span itemprop="name">现代密码学导论-1</span>
-          </a>
-      </h2>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/13/crypto-1/" rel="prev" title="现代密码学导论-1">
+      <i class="fa fa-chevron-left"></i> 现代密码学导论-1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/29/computer-networks-2/" rel="next" title="计算机网络课程总结-数据链路层">
+      计算机网络课程总结-数据链路层 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
@@ -265,20 +340,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -377,7 +452,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'https://dabeiz.github.io/tags/kerckhoff%E5%8E%9F%E5%88%99/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://dabeiz.github.io/2020/06/29/computer-networks/',]
       });
       });
   </script>
