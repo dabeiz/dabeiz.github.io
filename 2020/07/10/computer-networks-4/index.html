@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dabeiz.github.io","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="网络层开始解释网络之所以为网络的原因，因为它关注的是如何将源端数据包沿着网络中的路径一路送到接收方，而数据链路层只是将帧从某段线路的一端传到另一端。同时网络层在七层模型中处于中间的过渡位置，而且可以认为它几乎只有一个主要的IP协议，因此它让整个协议栈看起来就像是一个漏斗形状。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络课程总结-网络层">
+<meta property="og:url" content="https://dabeiz.github.io/2020/07/10/computer-networks-4/index.html">
+<meta property="og:site_name" content="DABEI-Z NOTES">
+<meta property="og:description" content="网络层开始解释网络之所以为网络的原因，因为它关注的是如何将源端数据包沿着网络中的路径一路送到接收方，而数据链路层只是将帧从某段线路的一端传到另一端。同时网络层在七层模型中处于中间的过渡位置，而且可以认为它几乎只有一个主要的IP协议，因此它让整个协议栈看起来就像是一个漏斗形状。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-10T08:17:08.000Z">
+<meta property="article:modified_time" content="2020-07-10T08:33:44.594Z">
+<meta property="article:author" content="dabei-Z">
+<meta property="article:tag" content="computer networks">
+<meta property="article:tag" content="network layer">
+<meta property="article:tag" content="routing">
+<meta property="article:tag" content="Dijkstra">
+<meta property="article:tag" content="Bellman-Ford">
+<meta property="article:tag" content="IPv6">
+<meta property="article:tag" content="NAT">
+<meta property="article:tag" content="ICMP">
+<meta property="article:tag" content="ARP">
+<meta property="article:tag" content="DHCP">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://dabeiz.github.io/2020/07/10/computer-networks-4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>计算机网络课程总结-网络层 | DABEI-Z NOTES</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DABEI-Z NOTES</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section">关于</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dabeiz.github.io/2020/07/10/computer-networks-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="dabei-Z">
+      <meta itemprop="description" content="一个试图使用费曼技巧学习的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DABEI-Z NOTES">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络课程总结-网络层
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-10 16:17:08 / 修改时间：16:33:44" itemprop="dateCreated datePublished" datetime="2020-07-10T16:17:08+08:00">2020-07-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>网络层开始解释网络之所以为网络的原因，因为它<strong>关注的是如何将源端数据包沿着网络中的路径一路送到接收方</strong>，而数据链路层只是将帧从某段线路的一端传到另一端。同时网络层在七层模型中处于中间的过渡位置，而且可以认为它几乎只有一个主要的IP协议，因此它让整个协议栈看起来就像是一个漏斗形状。</p>
+<a id="more"></a>
+<p>网络层需要向它的上层传输层提供服务，服务主要有两种：一种为基于<strong>虚电路（virtual circuit）的面向连接的服务</strong>，它与电话系统很相似，一旦建立连接，后续的数据传输就非常自然顺畅了；另一种是基于<strong>数据报（datagram）的无连接服务</strong>，它与邮局系统相似，对于每一个数据报都需要考虑它如何传送。当然不管是哪一种服务，都需要进行路径的选择，这由<strong>路由算法（routing algorithm）</strong>来决定，它是网络层最主要的内容。</p>
+<p>路由算法的设计不是随意的。网络上节点（路由器）和边（链路）众多，如何计算出一条从源端到接受方的合适路径呢？首先路由算法必须满足正确性（这是废话）；其次它需要满足稳定和高效性，即在规定时间内计算（收敛）出一条可以到达接受方的路径（这也是废话）；同时我们要考虑到网络上并不仅有一个数据包在传送，而是有很多个数据包同时存在在网络中，因此路径中的路由器选择也必须谨慎，避免不同通信线路和路由器负载严重不均（这点值得注意）；最后我们还希望路由算法具有鲁棒性，能应对系统中一些拓扑结构和流量方面的变化。</p>
+<p>最简单的路由算法应该是<strong>泛洪算法（flooding）</strong>，顾名思义，它的意思是让路由器将每一个入境数据包发送到所有出境线路，这样理论上所有路由器都能接收到所有数据包，但是这样做的代价是会产生大量重复的数据包，完全不适合在稍大型网络中使用。不过泛洪算法确实有一些优点，比如它非常适用于无线广播形式，而且它的鲁棒性非常好（因为即使多条线路被毁，只要存在一条可达路径，泛洪算法都能找到）。再复杂一点的路由算法有<strong>最短路径算法，核心就是Dijkstra算法</strong>（迪杰斯特拉，这个英文名我至少听过5种版本的读法），该算法要求给定一个完整网络视图并且图中无负权值。后一个要求很好满足，因为一般计算最短路径用的衡量标准是距离、带宽、平均延迟等不可能为负的量，但是前一个要求就比较苛刻了，它无形中规定网络是静态的，因此实用性不高。</p>
+<p>因此提出动态路由算法：距离矢量算法和链路状态算法。<strong>距离矢量算法也称分布式Bellman-Ford算法（RIP协议），每个路由器维护一张记录了当前到网络中其他所有路由器的最短路径长的路由表</strong>，并且算法执行过程中，路由器并不需要知道整个网络的拓扑结构也不学要知道自己在网路中的位置，只需要把自己的路由表发送给它的所有邻居即可。不过这个算法存在一个“无穷计算问题”，即网络中某节点宕机或被毁坏时，其他路由器需要很长一段时间后才能知道“哦这个路由器坏了”这个坏消息，因此该算法鲁棒性不好，某些情况下收敛极慢。因为距离矢量算法的这个致命缺点，1979年之后ARPANET就改用链路状态算法了，<strong>现在的大型网络应用最为广泛的路由算法都是它的变种（如OSPF）。它的核心思想退回到Dijkstra算法，也就是每个路由器了解网络的完整拓扑，不同的是它采用数据包来传递链路状态，以达到动态效果</strong>。由于要保存整个网络拓扑并且在本地运行Dijkstra算法，链路状态算法需要更多的内存和计算。虽然理论上大型网络上运行这个算法是存在问题的，但是实际场合中这个算法工作得很好，主要归功于它没有慢收敛问题。</p>
+<p>除了路由算法外，本章还重点讲了不同网络互联的问题，这也是著名的IP协议提出的契机。因为在数据链路层的许多种（小型）网络需要相互连接构成一个较大型的网络时，<strong>就需要有一个公共层来隐藏他们之间的差异</strong>，这也可以解释为什么网络层在协议栈中看起来非常狭窄。IP协议规定了路由器来连接不同网络，也就是说在每个网络的边界，路由器会将一个网络上传递的信息（广义上的信息，因为可能有数据包也可能有虚电路还可能有其他的形式）转换成可以在另一个网络传递的信息。这种转换可能会非常复杂，因为不同网络的通信标准差异会非常大，有时候甚至是矛盾的。</p>
+<p>由于IP协议是希望做为一个公共层来连接不同网络，那么IP协议相应地就为所有连接起来的网络中的不同主机和路由器都分配了一个全局的IP地址。可是IPv4的地址只有32位，也就是最多2^32^（约等于43亿）个不同IP地址，要知道全球人口数量远超这个数值，再加上用来中转信息的众多路由器，这么点IP地址就有点捉襟见肘。<strong>为了解决地址短缺的问题提出IPv6</strong>，它有128位地址（2^128^这个数字真的很大，它可以为地球上每平方米面积提供近10^26^地址，这甚至超过了阿伏伽德罗常数）。不过在从IPv4向IPv6迁移的漫长过程中，需要有一个<strong>短期应急方案，即网络地址转换（NAT）</strong>。它允许将网络流量分为内部与外部，只有在路由外部流量时才要求IP地址为全局唯一的，而在内部路由流量时，IP地址可以重复，这时的IP地址也称私有地址或保留地址。这也就是为什么许多家庭终端路由器的IP地址都是192.168.1.1。</p>
+<p>IP协议是用于互联网数据传输的，其实<strong>在互联网中还有许多辅助的控制协议</strong>，比较主要的有：ICMP协议、ARP协议和DHCP协议。ICMP协议因为生存期（TTL）参数的巧妙设置，可以被用来测试互联网的连接性；ARP（地址解析协议）用来将IP地址映射到数据链路层的地址；DHCP（动态主机配置协议）用来为主机分配 一个空闲的IP地址。还有一些协议如MPLS（多协议标签交换）并不严格地属于网络层，但它可以也可以完成将IP数据包在不同网络之间传输的任务。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/computer-networks/" rel="tag"># computer networks</a>
+              <a href="/tags/network-layer/" rel="tag"># network layer</a>
+              <a href="/tags/routing/" rel="tag"># routing</a>
+              <a href="/tags/Dijkstra/" rel="tag"># Dijkstra</a>
+              <a href="/tags/Bellman-Ford/" rel="tag"># Bellman-Ford</a>
+              <a href="/tags/IPv6/" rel="tag"># IPv6</a>
+              <a href="/tags/NAT/" rel="tag"># NAT</a>
+              <a href="/tags/ICMP/" rel="tag"># ICMP</a>
+              <a href="/tags/ARP/" rel="tag"># ARP</a>
+              <a href="/tags/DHCP/" rel="tag"># DHCP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/29/computer-networks-3/" rel="prev" title="计算机网络课程总结-介质访问控制子层">
+      <i class="fa fa-chevron-left"></i> 计算机网络课程总结-介质访问控制子层
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dabei-Z"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">dabei-Z</p>
+  <div class="site-description" itemprop="description">一个试图使用费曼技巧学习的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dabeiz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dabeiz" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:dabeidouretriever@sjtu.edu.cn" title="E-Mail → mailto:dabeidouretriever@sjtu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dabei-Z</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://dabeiz.github.io/2020/07/10/computer-networks-4/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

@@ -28,7 +28,7 @@
 <meta property="og:description" content="数据链路层主要关心怎么在相邻（可以是有线意义上的连接。也可以是无线但在可以通信范围内的）机器之间实现可靠有效的完整信息块（称为帧）通信。注意通信的最小单位不再是比特流而是一帧一帧的。直觉上，这好像很简单。形象地认为只要发送方把数据处理成一帧一帧的，放到信道上，接受方一帧一帧地收到后把它们还原成原始数据。我们大体上可以这么理解，但是细节的内容也需要知道。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-29T01:56:39.000Z">
-<meta property="article:modified_time" content="2020-06-29T02:24:03.057Z">
+<meta property="article:modified_time" content="2020-07-10T08:33:21.593Z">
 <meta property="article:author" content="dabei-Z">
 <meta property="article:tag" content="computer networks">
 <meta property="article:tag" content="link layer">
@@ -189,10 +189,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-06-29 09:56:39 / 修改时间：10:24:03" itemprop="dateCreated datePublished" datetime="2020-06-29T09:56:39+08:00">2020-06-29</time>
+              <time title="创建时间：2020-06-29 09:56:39" itemprop="dateCreated datePublished" datetime="2020-06-29T09:56:39+08:00">2020-06-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-10 16:33:21" itemprop="dateModified" datetime="2020-07-10T16:33:21+08:00">2020-07-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -214,7 +220,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>数据链路层主要关心怎么在相邻（可以是有线意义上的连接。也可以是无线但在可以通信范围内的）机器之间实现可靠有效的完整信息块（称为帧）通信。注意通信的最小单位不再是比特流而是一帧一帧的。直觉上，这好像很简单。形象地认为只要发送方把数据处理成一帧一帧的，放到信道上，接受方一帧一帧地收到后把它们还原成原始数据。我们大体上可以这么理解，但是细节的内容也需要知道。</p>
+        <p><strong>数据链路层主要关心怎么在相邻（可以是有线意义上的连接。也可以是无线但在可以通信范围内的）机器之间实现可靠有效的完整信息块（称为帧）通信</strong>。注意通信的最小单位不再是比特流而是一帧一帧的。直觉上，这好像很简单。形象地认为只要发送方把数据处理成一帧一帧的，放到信道上，接受方一帧一帧地收到后把它们还原成原始数据。我们大体上可以这么理解，但是细节的内容也需要知道。</p>
 <a id="more"></a>
 <ul>
 <li><p>如何把原始数据处理<strong>成帧</strong>? 我们只需要定义什么是帧即可。（计算机网络这个语境里和实际关联太大了，既定的定义不可能像数学那样天马行空自洽即可，而是需要考虑实际需求的，因此本课中说的定义实际上就是在设计网络时人们要求这样东西满足的性质）。那显而易见地，做为本层通信的最小单位，我们应该要求任何时候都能从信道中的比特流中区分出每一帧，这就要求我们在原始的比特流信息基础上，加入填充来隔断不同帧。</p>
@@ -225,7 +231,7 @@
 <p>滑动窗口协议这个概念太重要了！它还分三类：1位滑动窗口；回退N；选择重传。</p>
 </li>
 <li><p>数据链路层最接近生活的例子大概就是：家庭上网！现在主流的有两种方案：一种是重复利用原来的电话线，用电话线上网(拨号宽带)；另一种是<strong>光纤入户</strong>。（这里我们暂时不管wifi。因为wifi的”网”本质上也是通过这两种方式来的）。先来说第一种，用电话线上网其实是个有年代的词，以前上网和打电话还不能同时进行。但现在改进后，引入了<strong>ADSL模式</strong>，将高频与低频分离，这样上网电话两不耽误。（这里注意ADSL是指这种模式，真正做这事的是我们常称为”猫Modem，调制解调”的东西，而在服务器则相应地使用DSLAM)。第二种光纤入户则不需要考虑原来的电话线的麻烦事儿了（我觉得这也是计网有些协议很繁杂的原因，因为通信是个大范围的考虑，要更换或者说升级要考虑成本，于是就有很多魔改的协议好利用原来已有的设备）。不过由于光纤里传的是光信号，因此还是要在家里装个”光猫”才能使用它，实现光信号和其他协议中的数据的转换。</p>
-<p>还有很有意思的”客厅电视”战场：广电的有线电视、三大运营商的IPTV盒子（虽然也是”上网”看电视，但是运营商专门建了IP电视网）、互联网公司的网络电视盒子（跟用电脑看电视的原理差不多）。</p>
+<p>还有很有意思的<strong>“客厅电视”战场</strong>：广电的有线电视、三大运营商的IPTV盒子（虽然也是”上网”看电视，但是运营商专门建了IP电视网）、互联网公司的网络电视盒子（跟用电脑看电视的原理差不多）。</p>
 </li>
 </ul>
 
@@ -330,7 +336,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -343,7 +349,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
